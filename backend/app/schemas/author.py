@@ -16,8 +16,8 @@ class AuthorCreate(AuthorBase):
 
 
 class AuthorRead(AuthorBase):
-    id: int
-    created_by: str
-    updated_by: str
+    author_id: int
+    created_by_id: int
+    updated_by_id: int
     created_at: datetime
     updated_at: datetime
