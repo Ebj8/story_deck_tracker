@@ -2,8 +2,8 @@
 SQLAlchemy model for the user table
 """
 
-from .base import Base, relationship
-from typing import Optional, List
+from .base import Base
+from typing import Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
     Mapped,
@@ -31,7 +31,7 @@ class Catalog(Base):
     img_back_url: Mapped[Optional[str]]
 
     # Relationships
-    artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="cards")
+    # artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="catalog")
 
 
 class Artist(Base):
@@ -51,8 +51,8 @@ class ArtistLookup(Base):
     )
 
     # Relationships
-    artist: Mapped[Artist] = relationship(back_populates="artist_cards")
-    catalog: Mapped[Catalog] = relationship(back_populates="card_artists")
+    # artist: Mapped[Artist] = relationship(back_populates="artist_lookup")
+    # catalog: Mapped[Catalog] = relationship(back_populates="artist_lookup")
 
 
 class Author(Base):
@@ -70,8 +70,8 @@ class AuthorLookup(Base):
     )
 
     # Relationships
-    author: Mapped[Author] = relationship(back_populates="author_sets")
-    catalog: Mapped[Catalog] = relationship(back_populates="set_authors")
+    # author: Mapped[Author] = relationship(back_populates="author_sets")
+    # catalog: Mapped[Catalog] = relationship(back_populates="set_authors")
 
 
 class Set(Base):
@@ -81,10 +81,10 @@ class Set(Base):
     release_year: Mapped[int]
 
     # Relationships
-    catalog: Mapped[List[Catalog]] = relationship(back_populates="cards")
-    author_lookup: Mapped[List[AuthorLookup]] = relationship(
-        back_populates="set_authors"
-    )
+    # catalog: Mapped[List[Catalog]] = relationship(back_populates="cards")
+    # author_lookup: Mapped[List[AuthorLookup]] = relationship(
+    #     back_populates="set_authors"
+    # )
 
 
 class Collection(Base):
@@ -97,4 +97,4 @@ class Collection(Base):
     is_foil: Mapped[bool] = mapped_column(server_default="false")
 
     # Relationships
-    user: Mapped[User] = relationship(back_populates="collection")
+    # user: Mapped[User] = relationship(back_populates="collection")
