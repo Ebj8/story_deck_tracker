@@ -61,10 +61,6 @@ uv sync     # Sync environments and installs dependencies in pyproject.toml and 
 Note: You may have to configure the interpreter path in your IDE to point to the virtual environment created by uv.
 You can do so by entering the path: `backend/.venv/bin/python` in the interpreter path. Then open a new terminal.
 
-You may also need to follow these troubleshooting tips:
-
-https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#troubleshooting
-
 Additionally, you may need to set the environment variables in your .zshrc or preferred terminal profile.
 
 
