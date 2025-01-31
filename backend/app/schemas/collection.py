@@ -10,7 +10,7 @@ class CollectionBase(BaseModel):
     user_id: int
     card_id: int
     qty: int
-    is_foil: bool
+    is_foil: bool = False
     condition: str = Field(..., max_length=2)
 
 
@@ -18,7 +18,7 @@ class CollectionCreate(CollectionBase):
     pass
 
 
-class AuthorRead(CollectionBase):
+class CollectionRead(CollectionBase):
     created_by_id: int
     updated_by_id: int
     created_at: datetime

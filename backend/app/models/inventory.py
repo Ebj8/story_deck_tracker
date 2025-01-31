@@ -95,6 +95,7 @@ class Collection(Base):
     )
     qty: Mapped[int]
     is_foil: Mapped[bool] = mapped_column(server_default="false")
+    condition: Mapped[str]
 
     # Relationships
     # user: Mapped[User] = relationship(back_populates="collection")

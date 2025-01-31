@@ -19,7 +19,7 @@ async def create_author(author: AuthorCreate, db: dbDep):
     """
 
     try:
-        # Create patient in database
+        # Create an author in the database
         db_author = await author_crud.create_author(db, author)
     except Exception as e:
         raise e

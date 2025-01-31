@@ -19,7 +19,7 @@ async def create_artist(artist: ArtistCreate, db: dbDep):
     """
 
     try:
-        # Create patient in database
+        # Create artist in the database
         db_artist = await artist_crud.create_artist(db, artist)
     except Exception as e:
         raise e

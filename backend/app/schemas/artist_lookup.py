@@ -11,11 +11,11 @@ class ArtistLookupBase(BaseModel):
     card_id: int
 
 
-class ArtistCreate(ArtistLookupBase):
+class ArtistLookupCreate(ArtistLookupBase):
     pass
 
 
-class ArtistRead(ArtistLookupBase):
+class ArtistLookupRead(ArtistLookupBase):
     created_by_id: int
     updated_by_id: int
     created_at: datetime

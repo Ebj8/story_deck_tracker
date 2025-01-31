@@ -8,14 +8,14 @@ from datetime import datetime
 
 class AuthorLookupBase(BaseModel):
     author_id: int
-    card_id: int
+    set_id: int
 
 
-class AuthorCreate(AuthorLookupBase):
+class AuthorLookupCreate(AuthorLookupBase):
     pass
 
 
-class AuthorRead(AuthorLookupBase):
+class AuthorLookupRead(AuthorLookupBase):
     created_by_id: int
     updated_by_id: int
     created_at: datetime

@@ -19,7 +19,7 @@ async def create_user(user: UserCreate, db: dbDep):
     """
 
     try:
-        # Create patient in database
+        # Create a user in the database
         db_user = await user_crud.create_user(db, user)
     except Exception as e:
         raise e

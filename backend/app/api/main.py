@@ -8,13 +8,27 @@ The for loop will then include the router with the appropriate prefix and tags.
 """
 
 from fastapi import APIRouter
-from .routers import author, user, artist
+from .routers import (
+    author,
+    author_lookup,
+    user,
+    artist,
+    artist_lookup,
+    catalog,
+    set,
+    collection,
+)
 
 api_router = APIRouter(responses={404: {"description": "Not found"}})
 
 routers = {
     "artist": artist.router,
+    "artist_lookup": artist_lookup.router,
     "author": author.router,
+    "author_lookup": author_lookup.router,
+    "catalog": catalog.router,
+    "collection": collection.router,
+    "set": set.router,
     "user": user.router,
 }
 

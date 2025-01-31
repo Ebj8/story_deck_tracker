@@ -15,7 +15,7 @@ class SetCreate(SetBase):
     pass
 
 
-class AuthorRead(SetBase):
+class SetRead(SetBase):
     set_id: int
     created_by_id: int
     updated_by_id: int
