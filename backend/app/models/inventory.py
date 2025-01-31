@@ -89,13 +89,12 @@ class Set(Base):
 
 class Collection(Base):
     # Keys + Fields
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"), primary_key=True)
-    card_id: Mapped[int] = mapped_column(
-        ForeignKey("catalog.card_id"), primary_key=True
-    )
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"))
+    card_id: Mapped[int] = mapped_column(ForeignKey("catalog.card_id"))
     qty: Mapped[int]
     is_foil: Mapped[bool] = mapped_column(server_default="false")
     condition: Mapped[str]
+    transaction_id: Mapped[int] = mapped_column(primary_key=True)
 
     # Relationships
     # user: Mapped[User] = relationship(back_populates="collection")
