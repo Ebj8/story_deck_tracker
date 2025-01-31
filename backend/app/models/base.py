@@ -11,8 +11,17 @@ from sqlalchemy.orm import (
     Mapped,
     DeclarativeBase,
     mapped_column,
+    relationship as _relationship,
     declared_attr,
 )
+
+
+def relationship(*arg, **kw):
+    """
+    Sets default lazy to raise (for async).
+    """
+    kw.setdefault("lazy", "raise")
+    return _relationship(*arg, **kw)
 
 
 class Base(AsyncAttrs, DeclarativeBase):
