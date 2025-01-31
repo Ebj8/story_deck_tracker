@@ -19,9 +19,6 @@ class Settings(BaseSettings):
     Class for loading environment variables
     """
 
-    epay_key: str = Field(min_length=1)
-    epay_pin: str = Field(min_length=4)
-    shipengine_api_key: str = Field(min_length=1)
     database_url: str = Field(min_length=1)
     database_username: str = Field(min_length=1)
     database_password: str
