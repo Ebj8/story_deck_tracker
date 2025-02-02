@@ -24,17 +24,11 @@ function App() {
     <>
       <Routes>
         <Route element={<Layout />}>
-          {user ? (
-            <>
-              <Route path="/" element={<CollectionPage />} />
-              <Route path="/collection" element={<CollectionPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="/auth" element={<LoginPage />} />
-              <Route path="*" element={<h1>Page Not Found</h1>} />
-            </>
-          ) : (
-            <Route path="*" element={<LoginPage />} />
-          )}
+          <Route path="/" element={<CollectionPage />} />
+          <Route path="/collection" element={<CollectionPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="*" element={<h1>Page Not Found</h1>} />
         </Route>
       </Routes>
     </>
