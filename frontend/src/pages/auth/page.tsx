@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ErrorText from "@/components/universal/ErrorText";
+import { useUser } from "@/auth/userContext";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -39,6 +40,12 @@ interface LoginForm {
  * @returns {JSX.Element} LoginPage component
  */
 export default function LoginPage(): JSX.Element {
+  const { user } = useUser();
+
+  if (user) {
+    return <Navigate to="/" />;
+  }
+
   const form = useForm<LoginForm>({
     defaultValues: {
       email: "",

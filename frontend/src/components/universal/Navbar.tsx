@@ -1,6 +1,9 @@
 import { Button } from "@/components/ui/button";
+import { useUser } from "@/auth/userContext";
 
 const Navbar = () => {
+  const { user, signOutUser } = useUser();
+
   return (
     <nav className="bg-gray-800 text-white shadow-lg">
       <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
@@ -19,11 +22,17 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* ShadCN Button */}
+        {/* Sign In/Sign Out Button */}
         <div className="flex w-[25%] justify-end">
-          <Button className="bg-blue-500 hover:bg-blue-600 text-white">
-            <a href="/login">Sign In</a>
-          </Button>
+          {user ? (
+            <Button className="danger" onClick={signOutUser}>
+              Sign Out
+            </Button>
+          ) : (
+            <Button className="primary">
+              <a href="/login">Sign In</a>
+            </Button>
+          )}
         </div>
       </div>
     </nav>
