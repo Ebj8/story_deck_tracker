@@ -1,11 +1,21 @@
 import CardBox from "./cardBox";
+import { useGetCatalogCards } from "@/requests/gen/react-query/catalog";
 
 const CollectionPage = () => {
+  const { data } = useGetCatalogCards();
+
+  const numCards = data?.length || 0;
+  const numRows = Math.ceil(numCards / 3);
+
   return (
-    <div className="flex flex-row items-center">
-      <CardBox cardImage="https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fchasmfriends_01_front.jpg?alt=media&token=c2c630b5-f173-42c8-8208-1959a222e4bf" />
-      <CardBox cardImage="https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fchasmfriends_01_front.jpg?alt=media&token=c2c630b5-f173-42c8-8208-1959a222e4bf" />
-      <CardBox cardImage="https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fchasmfriends_01_front.jpg?alt=media&token=c2c630b5-f173-42c8-8208-1959a222e4bf" />
+    <div>
+      {Array.from({ length: numRows }).map((_, rowIndex) => (
+        <div key={rowIndex} className="flex flex-row items-center">
+          {data?.slice(rowIndex * 3, rowIndex * 3 + 3).map((card, index) => (
+            <CardBox key={index} card={card} />
+          ))}
+        </div>
+      ))}
     </div>
   );
 };
