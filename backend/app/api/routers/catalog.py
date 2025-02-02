@@ -26,3 +26,20 @@ async def create_catalog_card(catalog_card: CatalogCardCreate, db: dbDep):
 
     # Return the new patient
     return db_catalog_card
+
+
+### READ ###
+@router.get("/", response_model=list[CatalogCardRead])
+async def get_catalog_cards(db: dbDep):
+    """
+    Route to get all cards in the set catalog.
+    """
+
+    try:
+        # Get all cards in the catalog from the database
+        db_catalog_cards = await catalog_crud.get_catalog_cards(db)
+    except Exception as e:
+        raise e
+
+    # Return all cards in the catalog
+    return db_catalog_cards

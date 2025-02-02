@@ -3,6 +3,7 @@ CRUD operations for Catalog route
 """
 
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 from app.schemas.catalog import CatalogCardCreate
 from app import models
 
@@ -25,3 +26,12 @@ async def create_catalog_card(db: AsyncSession, catalog_card: CatalogCardCreate)
 
     await db.commit()
     return db_catalog_card
+
+
+# Get all cards in the Catalog
+async def get_catalog_cards(db: AsyncSession):
+    """
+    Get all cards in the catalog from the database.
+    """
+    result = await db.execute(select(models.Catalog))
+    return result.scalars().all()
