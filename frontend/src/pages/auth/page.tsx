@@ -58,10 +58,10 @@ export default function LoginPage(): JSX.Element {
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
     } catch (error) {
       form.setError("root.serverError", {
-        type: error.code,
-        message: error.message,
+        type: (error as any).code,
+        message: (error as any).message,
       });
-      console.log("Error logging in:", error.message);
+      console.log("Error logging in:", (error as any).message);
     }
   }
 
@@ -70,10 +70,10 @@ export default function LoginPage(): JSX.Element {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
       form.setError("root.serverError", {
-        type: error.code,
-        message: error.message,
+        type: (error as any).code,
+        message: (error as any).message,
       });
-      console.log("Error logging in:", error.message);
+      console.log("Error logging in:", (error as any).message);
     }
   }
 
