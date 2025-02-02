@@ -7,7 +7,7 @@ export function Layout() {
   return (
     <div className="flex flex-col min-h-screen bg-muted">
       <Navbar />
-      <div className="flex-grow container max-w-8xl my-4">
+      <div className="flex-grow container mx-auto justify-center items-center">
         <Outlet />
       </div>
       <Footer />
