@@ -17,10 +17,10 @@ class UserCreate(UserBase):
 
 
 class UserRead(UserBase):
-    user_id: int
+    user_id: str
     is_admin: bool
     is_active: bool
     created_at: datetime
     updated_at: datetime
-    created_by_id: int
-    updated_by_id: int
+    created_by_id: str
+    updated_by_id: str

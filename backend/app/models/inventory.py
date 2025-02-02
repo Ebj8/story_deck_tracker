@@ -1,5 +1,7 @@
 """
-SQLAlchemy model for the user table
+SQLAlchemy models for the whole inventory system
+
+Inventory is now referred to as collection throughout the app
 """
 
 from .base import Base
@@ -13,7 +15,7 @@ from sqlalchemy.orm import (
 
 class User(Base):
     # Keys + Fields
-    user_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[str] = mapped_column(primary_key=True)
     user_first: Mapped[str]
     user_last: Mapped[Optional[str]]
     email: Mapped[str]
@@ -89,7 +91,7 @@ class Set(Base):
 
 class Collection(Base):
     # Keys + Fields
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"))
+    user_id: Mapped[str] = mapped_column(ForeignKey("user.user_id"))
     card_id: Mapped[int] = mapped_column(ForeignKey("catalog.card_id"))
     qty: Mapped[int]
     is_foil: Mapped[bool] = mapped_column(server_default="false")

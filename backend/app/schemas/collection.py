@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 class CollectionBase(BaseModel):
-    user_id: int
+    user_id: str
     card_id: int
     qty: int
     is_foil: bool = False
@@ -19,7 +19,7 @@ class CollectionCreate(CollectionBase):
 
 
 class CollectionRead(CollectionBase):
-    created_by_id: int
-    updated_by_id: int
+    created_by_id: str
+    updated_by_id: str
     created_at: datetime
     updated_at: datetime

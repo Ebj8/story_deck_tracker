@@ -52,8 +52,8 @@ class Base(AsyncAttrs, DeclarativeBase):
         server_default=func.now(),
         onupdate=func.now(),
     )
-    created_by_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"))
-    updated_by_id: Mapped[int] = mapped_column(ForeignKey("user.user_id"))
+    created_by_id: Mapped[str] = mapped_column(ForeignKey("user.user_id"))
+    updated_by_id: Mapped[str] = mapped_column(ForeignKey("user.user_id"))
 
     # This overrides the default __repr__ method to print the class name and attributes
     def __repr__(self):

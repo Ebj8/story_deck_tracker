@@ -17,8 +17,8 @@ async def create_collection_row(db: AsyncSession, collection_row: CollectionCrea
     db_collection_row = models.Collection(
         **collection_row.model_dump(),
         # TODO: Replace with actual user id
-        created_by_id=1,
-        updated_by_id=1,
+        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
     )
 
     # Create patient in database

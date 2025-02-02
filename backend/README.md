@@ -81,6 +81,7 @@ uv remove <package-name>
 We use Alembic to manage database migrations such as creating a new table, adding columns, or modifying existing columns. To create a new migration, set your working directory to `backend/app` then run:
 
 ```bash
+cd app
 alembic revision -m "<migration-description>"
 ```
 

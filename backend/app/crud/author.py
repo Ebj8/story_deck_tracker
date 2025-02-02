@@ -15,8 +15,8 @@ async def create_author(db: AsyncSession, author: AuthorCreate):
 
     db_author = models.Author(
         **author.model_dump(),
-        created_by_id=1,
-        updated_by_id=1,
+        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
     )
 
     # Create patient in database

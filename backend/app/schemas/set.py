@@ -17,7 +17,7 @@ class SetCreate(SetBase):
 
 class SetRead(SetBase):
     set_id: int
-    created_by_id: int
-    updated_by_id: int
+    created_by_id: str
+    updated_by_id: str
     created_at: datetime
     updated_at: datetime

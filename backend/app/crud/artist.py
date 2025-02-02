@@ -16,8 +16,8 @@ async def create_artist(db: AsyncSession, artist: ArtistCreate):
     db_artist = models.Artist(
         **artist.model_dump(),
         # TODO: Replace with actual user id
-        created_by_id=1,
-        updated_by_id=1,
+        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
     )
 
     # Create patient in database
