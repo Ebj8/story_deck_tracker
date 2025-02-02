@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useUser } from "@/auth/userContext";
 
 const Navbar = () => {
-  const { user, signOutUser } = useUser();
+  const { user, dbUser, signOutUser } = useUser();
 
   return (
     <nav className="bg-gray-800 text-white shadow-lg">
@@ -20,6 +20,11 @@ const Navbar = () => {
           <a href="/about" className="hover:text-gray-400">
             About
           </a>
+          {dbUser?.is_admin && (
+            <a href="/admin" className="hover:text-gray-400">
+              Admin
+            </a>
+          )}
         </div>
 
         {/* Sign In/Sign Out Button */}
