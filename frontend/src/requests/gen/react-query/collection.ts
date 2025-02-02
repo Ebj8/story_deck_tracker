@@ -9,9 +9,13 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -117,7 +121,7 @@ export const getGetCollectionCountQueryKey = (userId: number,) => {
     }
 
     
-export const getGetCollectionCountQueryOptions = <TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(userId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>, }
+export const getGetCollectionCountQueryOptions = <TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -132,25 +136,49 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetCollectionCountQueryResult = NonNullable<Awaited<ReturnType<typeof getCollectionCount>>>
 export type GetCollectionCountQueryError = ErrorType<void | HTTPValidationError>
 
 
+export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollectionCount>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollectionCount>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Collection Count
  */
 
 export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
- userId: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>, }
+ userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
 
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetCollectionCountQueryOptions(userId,options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey ;
 

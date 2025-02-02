@@ -9,9 +9,13 @@ import {
   useQuery
 } from '@tanstack/react-query'
 import type {
+  DataTag,
+  DefinedInitialDataOptions,
+  DefinedUseQueryResult,
   MutationFunction,
   QueryFunction,
   QueryKey,
+  UndefinedInitialDataOptions,
   UseMutationOptions,
   UseMutationResult,
   UseQueryOptions,
@@ -50,7 +54,7 @@ export const getGetCatalogCardsQueryKey = () => {
     }
 
     
-export const getGetCatalogCardsQueryOptions = <TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>, }
+export const getGetCatalogCardsQueryOptions = <TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -65,25 +69,49 @@ const {query: queryOptions} = options ?? {};
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData> & { queryKey: QueryKey }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
 export type GetCatalogCardsQueryResult = NonNullable<Awaited<ReturnType<typeof getCatalogCards>>>
 export type GetCatalogCardsQueryError = ErrorType<void>
 
 
+export function useGetCatalogCards<TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCatalogCards>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCatalogCards<TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCatalogCards>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCatalogCards<TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
  * @summary Get Catalog Cards
  */
 
 export function useGetCatalogCards<TData = Awaited<ReturnType<typeof getCatalogCards>>, TError = ErrorType<void>>(
-  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>, }
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCatalogCards>>, TError, TData>>, }
 
-  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetCatalogCardsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
   query.queryKey = queryOptions.queryKey ;
 

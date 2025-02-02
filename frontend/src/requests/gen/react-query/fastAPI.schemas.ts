@@ -16,13 +16,13 @@ export interface UserRead {
   user_first: string;
   user_last: string;
   email: string;
-  user_id: number;
+  user_id: string;
   is_admin: boolean;
   is_active: boolean;
   created_at: string;
   updated_at: string;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
 }
 
 export interface UserCreate {
@@ -36,8 +36,8 @@ export interface SetRead {
   set_name: string;
   release_year: number;
   set_id: number;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
@@ -52,20 +52,20 @@ export interface HTTPValidationError {
 }
 
 export interface CollectionRead {
-  user_id: number;
+  user_id: string;
   card_id: number;
   qty: number;
   is_foil?: boolean;
   /** @maxLength 2 */
   condition: string;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface CollectionCreate {
-  user_id: number;
+  user_id: string;
   card_id: number;
   qty: number;
   is_foil?: boolean;
@@ -74,7 +74,7 @@ export interface CollectionCreate {
 }
 
 export interface CollectionBase {
-  user_id: number;
+  user_id: string;
   card_id: number;
   qty: number;
   is_foil?: boolean;
@@ -95,8 +95,8 @@ export interface CatalogCardRead {
   card_id: number;
   created_at: string;
   updated_at: string;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
 }
 
 export type CatalogCardCreateImgBackUrl = string | null;
@@ -115,8 +115,8 @@ export interface AuthorRead {
   author_first: string;
   author_last: string;
   author_id: number;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
@@ -124,8 +124,8 @@ export interface AuthorRead {
 export interface AuthorLookupRead {
   author_id: number;
   set_id: number;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
@@ -144,8 +144,8 @@ export interface ArtistRead {
   artist_first: string;
   artist_last: string;
   artist_id: number;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
@@ -153,8 +153,8 @@ export interface ArtistRead {
 export interface ArtistLookupRead {
   artist_id: number;
   card_id: number;
-  created_by_id: number;
-  updated_by_id: number;
+  created_by_id: string;
+  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
