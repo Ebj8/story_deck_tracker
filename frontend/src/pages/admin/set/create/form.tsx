@@ -21,6 +21,7 @@ const formSchema = z.object({
   release_year: z.number().int().min(2024).max(2100),
 });
 
+// 2. Define form component
 const CreateSetForm = () => {
   const mutation = useCreateSet();
 
@@ -32,7 +33,7 @@ const CreateSetForm = () => {
     },
   });
 
-  // 2. Define a submit handler.
+  // 3. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
@@ -51,44 +52,50 @@ const CreateSetForm = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="set_name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Set Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Chasmfriends" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="release_year"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Release Year</FormLabel>
-              <FormControl>
-                <Input
-                  placeholder="2024"
-                  {...field}
-                  onChange={(e) => field.onChange(Number(e.target.value) || "")} // Convert to number
-                  value={field.value || ""} // Ensure empty input doesn't cause NaN
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-end">
-          <Button type="submit">Next</Button>
-        </div>
-      </form>
-    </Form>
+    <>
+      <h1 className="text-2xl font-bold">Create a new set</h1>
+      <br />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="set_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Set Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Chasmfriends" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="release_year"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Release Year</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="2024"
+                    {...field}
+                    onChange={(e) =>
+                      field.onChange(Number(e.target.value) || "")
+                    } // Convert to number
+                    value={field.value || ""} // Ensure empty input doesn't cause NaN
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex justify-end">
+            <Button type="submit">Next</Button>
+          </div>
+        </form>
+      </Form>
+    </>
   );
 };
 
