@@ -1,32 +1,39 @@
 import CollectionPage from "@/pages/collection/page";
 import AboutPage from "@/pages/about/page";
 import LoginPage from "@/pages/auth/page";
+import SetPage from "@/pages/admin/set/page";
 import { Routes, Route } from "react-router";
 import { Layout } from "@/pages/layout";
-import { UserProvider } from "@/auth/userContext";
 import AdminRoutes from "@/auth/AdminRoutes";
 import { useUser } from "@/auth/userContext";
+import { useState, useEffect } from "react";
 import "./index.css";
 
 function App() {
-  const { user } = useUser();
+  const { dbUser } = useUser();
+  const [userReady, setUserReady] = useState(false);
+
+  useEffect(() => {
+    if (dbUser) {
+      setUserReady(true);
+    }
+  }, [dbUser]);
+
   return (
-    <UserProvider>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<CollectionPage />} />
-          <Route path="/collection" element={<CollectionPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          {user && (
-            <Route element={<AdminRoutes />}>
-              <Route path="/admin" element={<h1>Admin Page</h1>} />
-            </Route>
-          )}
-          <Route path="*" element={<h1>Page Not Found</h1>} />
-        </Route>
-      </Routes>
-    </UserProvider>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<CollectionPage />} />
+        <Route path="/collection" element={<CollectionPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        {userReady && dbUser?.is_admin && (
+          <Route path="admin" element={<AdminRoutes />}>
+            <Route path="sets" element={<SetPage />} />
+          </Route>
+        )}
+        <Route path="*" element={<h1>Page Not Found</h1>} />
+      </Route>
+    </Routes>
   );
 }
 
