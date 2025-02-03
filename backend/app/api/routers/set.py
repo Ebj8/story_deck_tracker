@@ -26,3 +26,20 @@ async def create_set(set: SetCreate, db: dbDep):
 
     # Return the new patient
     return db_set
+
+
+### READ ###
+@router.get("/", response_model=list[SetRead])
+async def get_sets(db: dbDep):
+    """
+    Route to get all sets.
+    """
+
+    try:
+        # Get all sets from the database
+        db_sets = await set_crud.get_sets(db)
+    except Exception as e:
+        raise e
+
+    # Return the sets
+    return db_sets
