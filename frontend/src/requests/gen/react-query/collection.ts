@@ -22,7 +22,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import type {
-  CollectionBase,
+  CollectionCounts,
   CollectionCreate,
   CollectionRead,
   HTTPValidationError
@@ -104,24 +104,24 @@ The values returned are grouped on the card_id, is_foil, and condition columns.
  * @summary Get Collection Count
  */
 export const getCollectionCount = (
-    userId: number,
+    userId: string,
  signal?: AbortSignal
 ) => {
       
       
-      return customInstance<CollectionBase[]>(
+      return customInstance<CollectionCounts[]>(
       {url: `/api/collection/${userId}`, method: 'GET', signal
     },
       );
     }
   
 
-export const getGetCollectionCountQueryKey = (userId: number,) => {
+export const getGetCollectionCountQueryKey = (userId: string,) => {
     return [`/api/collection/${userId}`] as const;
     }
 
     
-export const getGetCollectionCountQueryOptions = <TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
+export const getGetCollectionCountQueryOptions = <TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
 ) => {
 
 const {query: queryOptions} = options ?? {};
@@ -144,7 +144,7 @@ export type GetCollectionCountQueryError = ErrorType<void | HTTPValidationError>
 
 
 export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
- userId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
+ userId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCollectionCount>>,
           TError,
@@ -154,7 +154,7 @@ export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getColle
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
- userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getCollectionCount>>,
           TError,
@@ -164,7 +164,7 @@ export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getColle
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
- userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 /**
@@ -172,7 +172,7 @@ export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getColle
  */
 
 export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getCollectionCount>>, TError = ErrorType<void | HTTPValidationError>>(
- userId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCount>>, TError, TData>>, }
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 

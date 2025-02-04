@@ -57,7 +57,7 @@ export interface CollectionRead {
   qty: number;
   is_foil?: boolean;
   /** @maxLength 2 */
-  condition: string;
+  condition?: string;
   created_by_id: string;
   updated_by_id: string;
   created_at: string;
@@ -70,16 +70,14 @@ export interface CollectionCreate {
   qty: number;
   is_foil?: boolean;
   /** @maxLength 2 */
-  condition: string;
+  condition?: string;
 }
 
-export interface CollectionBase {
+export interface CollectionCounts {
   user_id: string;
   card_id: number;
+  is_foil: boolean;
   qty: number;
-  is_foil?: boolean;
-  /** @maxLength 2 */
-  condition: string;
 }
 
 export type CatalogCardReadImgBackUrl = string | null;
