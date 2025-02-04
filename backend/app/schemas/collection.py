@@ -23,3 +23,10 @@ class CollectionRead(CollectionBase):
     updated_by_id: str
     created_at: datetime
     updated_at: datetime
+
+
+class CollectionCounts(BaseModel):
+    user_id: str
+    card_id: int
+    is_foil: bool
+    qty: int

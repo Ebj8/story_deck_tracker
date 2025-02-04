@@ -40,7 +40,6 @@ async def get_collection_count(db: AsyncSession, user_id: int):
             models.Collection.user_id,
             models.Collection.card_id,
             models.Collection.is_foil,
-            models.Collection.condition,
             func.sum(models.Collection.qty).label("qty"),  # Alias sum result
         )
         .where(models.Collection.user_id == user_id)
@@ -48,7 +47,6 @@ async def get_collection_count(db: AsyncSession, user_id: int):
             models.Collection.user_id,  # Include user_id in the GROUP BY
             models.Collection.card_id,
             models.Collection.is_foil,
-            models.Collection.condition,
         )
     )
 

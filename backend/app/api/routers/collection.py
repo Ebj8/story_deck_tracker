@@ -3,7 +3,7 @@ Set Collection routes
 """
 
 from fastapi import APIRouter
-from app.schemas.collection import CollectionCreate, CollectionRead, CollectionBase
+from app.schemas.collection import CollectionCreate, CollectionRead, CollectionCounts
 from app.api.deps.db import dbDep
 from app.crud import collection as collection_crud
 
@@ -30,7 +30,7 @@ async def create_collection_row(collection_row: CollectionCreate, db: dbDep):
 
 
 ### READ ###
-@router.get("/{user_id}", response_model=list[CollectionBase])
+@router.get("/{user_id}", response_model=list[CollectionCounts])
 async def get_collection_count(user_id: str, db: dbDep):
     """
     Route to get the total count of each card in a user's collection.
