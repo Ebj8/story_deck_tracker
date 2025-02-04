@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import Counter from "@/components/ui/Counter";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   CatalogCardRead,
   CollectionCounts,
@@ -44,14 +44,21 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
   return (
     <Card className="m-4 w-[100%]">
       <CardContent>
-        <motion.img
-          className="rounded-lg m-4 mx-auto"
-          src={imageUrl}
-          alt="Card Image"
-          style={{ filter: colored ? "none" : "grayscale(100%)" }}
-          animate={{ rotateY: colored ? 360 : 0 }}
-          transition={{ duration: 0.6 }}
-        />
+        <AnimatePresence mode="popLayout">
+          <motion.img
+            key={regQty + foilQty}
+            className="rounded-lg m-4 mx-auto"
+            src={imageUrl}
+            alt="Card Image"
+            initial={{ opacity: 0, scale: 0 }}
+            style={{ filter: colored ? "none" : "grayscale(100%)" }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{
+              duration: 0.4,
+              scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+            }}
+          />
+        </AnimatePresence>
         <div className="grid grid-cols-2 gap-8 items-center justify-center">
           {/* Regular & Foil Counters */}
           <Counter
