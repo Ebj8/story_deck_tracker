@@ -31,7 +31,7 @@ async def create_collection_row(collection_row: CollectionCreate, db: dbDep):
 
 ### READ ###
 @router.get("/{user_id}", response_model=list[CollectionBase])
-async def get_collection_count(user_id: int, db: dbDep):
+async def get_collection_count(user_id: str, db: dbDep):
     """
     Route to get the total count of each card in a user's collection.
 

@@ -11,7 +11,7 @@ class CollectionBase(BaseModel):
     card_id: int
     qty: int
     is_foil: bool = False
-    condition: str = Field(..., max_length=2)
+    condition: str = Field("NM", max_length=2)
 
 
 class CollectionCreate(CollectionBase):
