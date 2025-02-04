@@ -57,7 +57,7 @@ const CardBox = (props: CardBoxProps) => {
           src={imageUrl}
           alt="Card Image"
           style={{ filter: colored ? "none" : "grayscale(100%)" }}
-          animate={{ rotateY: colored ? 720 : 0 }}
+          animate={{ rotateY: colored ? 360 : 0 }}
           transition={{ duration: 0.6 }}
         />
         <div className="grid grid-cols-2 gap-8 items-center justify-center">
@@ -67,7 +67,7 @@ const CardBox = (props: CardBoxProps) => {
             <div className="flex items-center space-x-2">
               <Button
                 onClick={() => setRegQty((prev) => Math.max(0, prev - 1))}
-                className="px-2 py-1 text-xs"
+                className="px-2 py-1 text-xs max-h-6"
               >
                 -
               </Button>
@@ -87,7 +87,7 @@ const CardBox = (props: CardBoxProps) => {
               </div>
               <Button
                 onClick={() => setRegQty((prev) => prev + 1)}
-                className="px-2 py-1 text-xs"
+                className="px-2 py-1 text-xs max-h-6"
               >
                 +
               </Button>
@@ -99,7 +99,7 @@ const CardBox = (props: CardBoxProps) => {
             <div className="flex items-center space-x-2">
               <Button
                 onClick={() => setFoilQty((prev) => Math.max(0, prev - 1))}
-                className="px-2 py-1 text-xs"
+                className="px-2 py-1 text-xs max-h-6"
               >
                 -
               </Button>
@@ -119,7 +119,7 @@ const CardBox = (props: CardBoxProps) => {
               </div>
               <Button
                 onClick={() => setFoilQty((prev) => prev + 1)}
-                className="px-2 py-1 text-xs"
+                className="px-2 py-1 text-xs max-h-6"
               >
                 +
               </Button>
