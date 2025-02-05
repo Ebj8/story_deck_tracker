@@ -6,6 +6,7 @@ import {
   CatalogCardRead,
   CollectionCounts,
 } from "@/requests/gen/react-query/fastAPI.schemas";
+import { useUser } from "@/auth/userContext";
 
 interface CardBoxProps {
   card: CatalogCardRead;
@@ -13,7 +14,10 @@ interface CardBoxProps {
 }
 
 const CardBox = ({ card, collection }: CardBoxProps) => {
+  // colored is used to determine if a card should be colored or grayscale
   const [colored, setColored] = useState(false);
+  // Fetch the user to determine if we should render collection update buttons
+  const { user } = useUser();
 
   // Filter collections
   const filteredCollection = collection?.filter(
@@ -46,6 +50,8 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
       <CardContent>
         <AnimatePresence mode="popLayout">
           <motion.img
+            // whenever key changes the animation triggers so we trigger the animation
+            // whenever card quantities change
             key={regQty + foilQty}
             className="rounded-lg m-4 mx-auto"
             src={imageUrl}
@@ -59,21 +65,23 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
             }}
           />
         </AnimatePresence>
-        <div className="grid grid-cols-2 gap-8 items-center justify-center">
-          {/* Regular & Foil Counters */}
-          <Counter
-            label="Regular"
-            count={regQty}
-            onIncrement={() => setRegQty((prev) => prev + 1)}
-            onDecrement={() => setRegQty((prev) => Math.max(0, prev - 1))}
-          />
-          <Counter
-            label="Foil"
-            count={foilQty}
-            onIncrement={() => setFoilQty((prev) => prev + 1)}
-            onDecrement={() => setFoilQty((prev) => Math.max(0, prev - 1))}
-          />
-        </div>
+        {user && (
+          <div className="grid grid-cols-2 gap-8 items-center justify-center">
+            {/* Regular & Foil Counters */}
+            <Counter
+              label="Regular"
+              count={regQty}
+              onIncrement={() => setRegQty((prev) => prev + 1)}
+              onDecrement={() => setRegQty((prev) => Math.max(0, prev - 1))}
+            />
+            <Counter
+              label="Foil"
+              count={foilQty}
+              onIncrement={() => setFoilQty((prev) => prev + 1)}
+              onDecrement={() => setFoilQty((prev) => Math.max(0, prev - 1))}
+            />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
