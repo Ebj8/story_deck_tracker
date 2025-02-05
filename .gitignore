@@ -1,4 +1,5 @@
-saved_data/
+frontend/saved_data/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
