@@ -1,12 +1,12 @@
 import CardBox from "./cardBox";
 import { useGetCatalogCards } from "@/requests/gen/react-query/catalog";
-import { useGetCollectionCount } from "@/requests/gen/react-query/collection";
+import { useGetCollection } from "@/requests/gen/react-query/collection";
 import { useUser } from "@/auth/userContext";
 
 const CollectionPage = () => {
   const { data } = useGetCatalogCards();
   const { user } = useUser();
-  const { data: collection } = useGetCollectionCount(user?.uid || "");
+  const { data: collection } = useGetCollection(user?.uid || "");
 
   const numCards = data?.length || 0;
   const numRows = Math.ceil(numCards / 3);

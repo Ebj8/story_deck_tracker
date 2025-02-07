@@ -4,14 +4,17 @@ import Counter from "@/components/ui/Counter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CatalogCardRead,
-  CollectionCounts,
+  CollectionRead,
 } from "@/requests/gen/react-query/fastAPI.schemas";
 import { useUser } from "@/auth/UserContext";
-import { useCreateCollectionRow } from "@/requests/gen/react-query/collection";
+import {
+  useCreateCollectionRow,
+  useUpdateCollectionRow,
+} from "@/requests/gen/react-query/collection";
 
 interface CardBoxProps {
   card: CatalogCardRead;
-  collection: CollectionCounts[] | undefined;
+  collection: CollectionRead[] | undefined;
 }
 
 const CardBox = ({ card, collection }: CardBoxProps) => {
@@ -24,20 +27,34 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
   const filteredCollection = collection?.filter(
     (item) => item.card_id === card.card_id
   );
-  const regCollection = filteredCollection?.find((item) => !item.is_foil);
-  const foilCollection = filteredCollection?.find((item) => item.is_foil);
+  const regCollection = filteredCollection?.filter((item) => !item.is_foil);
+  const foilCollection = filteredCollection?.filter((item) => item.is_foil);
 
-  // Initialize state from props
-  const [regQty, setRegQty] = useState(() => regCollection?.qty ?? 0);
-  const [foilQty, setFoilQty] = useState(() => foilCollection?.qty ?? 0);
+  // Initialize state
+  const [regQty, setRegQty] = useState(0);
+  const [foilQty, setFoilQty] = useState(0);
+  const [regNMQty, setRegNMQty] = useState(0);
+  const [foilNMQty, setFoilNMQty] = useState(0);
 
-  const mutation = useCreateCollectionRow();
+  const createCollectionRow = useCreateCollectionRow();
+  const updateCollectionRow = useUpdateCollectionRow();
 
   // Update state only when collection changes
   useEffect(() => {
-    setRegQty(regCollection?.qty ?? 0);
-    setFoilQty(foilCollection?.qty ?? 0);
-  }, [collection]); // Depend on `collection` instead of filteredCollection
+    // Sum the total qunatities across conditions of regular and foil cards
+    setRegQty(regCollection?.reduce((total, item) => total + item.qty, 0) ?? 0);
+    setFoilQty(
+      foilCollection?.reduce((total, item) => total + item.qty, 0) ?? 0
+    );
+
+    // Get just the quantities for the first NM card row
+    setRegNMQty(
+      regCollection?.find((item) => item?.condition === "NM")?.qty ?? 0
+    );
+    setFoilNMQty(
+      foilCollection?.find((item) => item?.condition === "NM")?.qty ?? 0
+    );
+  }, [regCollection, foilCollection]);
 
   // Handle color animation
   useEffect(() => {
@@ -45,8 +62,8 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
   }, [regQty, foilQty]);
 
   const handleRegIncrease = () => {
-    if (regQty === 0 && user != undefined) {
-      mutation.mutate(
+    if (regNMQty === 0 && user != undefined) {
+      createCollectionRow.mutate(
         {
           data: {
             user_id: user?.uid,
@@ -65,13 +82,34 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
           },
         }
       );
+    } else {
+      updateCollectionRow.mutate(
+        {
+          data: {
+            user_id: user?.uid ?? "",
+            card_id: card.card_id,
+            is_foil: false,
+            qty: regNMQty + 1,
+            condition: "NM",
+          },
+        },
+        {
+          onSuccess: (response) => {
+            console.log("Set updated successfully!", response);
+          },
+          onError: (error) => {
+            console.error("Error updating set:", error);
+          },
+        }
+      );
     }
     setRegQty((prev) => prev + 1);
+    setRegNMQty((prev) => prev + 1);
   };
 
   const handleFoilIncrease = () => {
-    if (foilQty === 0 && user != undefined) {
-      mutation.mutate(
+    if (foilNMQty === 0 && user != undefined) {
+      createCollectionRow.mutate(
         {
           data: {
             user_id: user?.uid,
@@ -90,8 +128,29 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
           },
         }
       );
+    } else {
+      updateCollectionRow.mutate(
+        {
+          data: {
+            user_id: user?.uid ?? "",
+            card_id: card.card_id,
+            is_foil: true,
+            qty: foilNMQty + 1,
+            condition: "NM",
+          },
+        },
+        {
+          onSuccess: (response) => {
+            console.log("Set updated successfully!", response);
+          },
+          onError: (error) => {
+            console.error("Error updating set:", error);
+          },
+        }
+      );
     }
     setFoilQty((prev) => prev + 1);
+    setFoilNMQty((prev) => prev + 1);
   };
 
   // Default image if no image is provided
