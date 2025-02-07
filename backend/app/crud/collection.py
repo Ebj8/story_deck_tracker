@@ -4,8 +4,9 @@ CRUD operations for Collection route
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
-from app.schemas.collection import CollectionCreate
+from app.schemas.collection import CollectionCreate, CollectionUpdate
 from app import models
+from datetime import datetime
 
 
 # Add a row of data to a user's collection
@@ -57,3 +58,30 @@ async def get_collection_count(db: AsyncSession, user_id: int):
     collection_counts = result.mappings().all()
 
     return collection_counts
+
+
+# Edit a row in a user's collection
+async def update_collection_row(db: AsyncSession, collection_row: CollectionUpdate):
+    """
+    Update a card entry in a user's collection in the database.
+    """
+
+    # Get the existing collection row
+    existing_collection_row = (
+        await db.execute(
+            select(models.Collection).where(
+                models.Collection.user_id == collection_row.user_id,
+                models.Collection.card_id == collection_row.card_id,
+                models.Collection.is_foil == collection_row.is_foil,
+                models.Collection.condition == collection_row.condition,
+            )
+        )
+    ).scalar_one()
+
+    # Update the existing collection row
+    existing_collection_row.qty = collection_row.qty
+    existing_collection_row.updated_by_id = collection_row.updated_by_id
+    existing_collection_row.updated_at = datetime.now()
+
+    await db.commit()
+    return existing_collection_row

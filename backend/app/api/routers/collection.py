@@ -44,3 +44,20 @@ async def get_collection_count(user_id: str, db: dbDep):
         raise e
 
     return collection_count
+
+
+### UPDATE ###
+@router.put("/", response_model=CollectionRead)
+async def update_collection_row(collection_row: CollectionCreate, db: dbDep):
+    """
+    Route to update a user's collection row.
+    """
+
+    try:
+        db_collection_row = await collection_crud.update_collection_row(
+            db, collection_row
+        )
+    except Exception as e:
+        raise e
+
+    return db_collection_row

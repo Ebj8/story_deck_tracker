@@ -15,12 +15,15 @@ class CollectionBase(BaseModel):
 
 
 class CollectionCreate(CollectionBase):
-    pass
+    created_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
+    updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
+
+
+class CollectionUpdate(CollectionBase):
+    updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
 class CollectionRead(CollectionBase):
-    created_by_id: str
-    updated_by_id: str
     created_at: datetime
     updated_at: datetime
 
