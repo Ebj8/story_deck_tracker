@@ -20,11 +20,14 @@ class CatalogCardCreate(CatalogCard):
     pass
 
 
-class CatalogCardRead(CatalogCardCreate):
+class CatalogCardRead(CatalogCard):
     card_id: int
     created_at: datetime
     updated_at: datetime
     created_by_id: str
     updated_by_id: str
+
+
+class CatalogCardComplexRead(CatalogCardRead):
     set: SetRead
     artist_lookup: list[ArtistLookupRead]
