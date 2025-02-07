@@ -5,6 +5,7 @@ CRUD operations for Collection route
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 from app.schemas.collection import CollectionCreate, CollectionUpdate
+from sqlalchemy.orm import joinedload
 from app import models
 from datetime import datetime
 
@@ -62,8 +63,10 @@ async def get_collection(db: AsyncSession, user_id: int):
     """
 
     # Define the query
-    collection_query = select(models.Collection).where(
-        models.Collection.user_id == user_id
+    collection_query = (
+        select(models.Collection)
+        .where(models.Collection.user_id == user_id)
+        .options(joinedload(models.Collection.catalog))
     )
 
     # Execute the query

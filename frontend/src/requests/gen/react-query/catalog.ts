@@ -22,6 +22,7 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import type {
+  CatalogCardComplexRead,
   CatalogCardCreate,
   CatalogCardRead,
   HTTPValidationError
@@ -42,7 +43,7 @@ export const getCatalogCards = (
 ) => {
       
       
-      return customInstance<CatalogCardRead[]>(
+      return customInstance<CatalogCardComplexRead[]>(
       {url: `/api/catalog/`, method: 'GET', signal
     },
       );

@@ -51,17 +51,6 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
-export interface CollectionRead {
-  user_id: string;
-  card_id: number;
-  qty: number;
-  is_foil?: boolean;
-  /** @maxLength 2 */
-  condition?: string;
-  created_at: string;
-  updated_at: string;
-}
-
 export interface CollectionCreate {
   user_id: string;
   card_id: number;
@@ -97,6 +86,20 @@ export interface CatalogCardRead {
   updated_by_id: string;
 }
 
+export interface CollectionRead {
+  user_id: string;
+  card_id: number;
+  qty: number;
+  is_foil?: boolean;
+  /** @maxLength 2 */
+  condition?: string;
+  created_at: string;
+  updated_at: string;
+  created_by_id: string;
+  updated_by_id: string;
+  catalog: CatalogCardRead;
+}
+
 export type CatalogCardCreateImgBackUrl = string | null;
 
 export type CatalogCardCreateImgFrontUrl = string | null;
@@ -107,6 +110,25 @@ export interface CatalogCardCreate {
   is_variant?: boolean;
   img_front_url?: CatalogCardCreateImgFrontUrl;
   img_back_url?: CatalogCardCreateImgBackUrl;
+}
+
+export type CatalogCardComplexReadImgBackUrl = string | null;
+
+export type CatalogCardComplexReadImgFrontUrl = string | null;
+
+export interface CatalogCardComplexRead {
+  set_id: number;
+  collector_number: string;
+  is_variant?: boolean;
+  img_front_url?: CatalogCardComplexReadImgFrontUrl;
+  img_back_url?: CatalogCardComplexReadImgBackUrl;
+  card_id: number;
+  created_at: string;
+  updated_at: string;
+  created_by_id: string;
+  updated_by_id: string;
+  set: SetRead;
+  artist_lookup: ArtistLookupRead[];
 }
 
 export interface AuthorRead {

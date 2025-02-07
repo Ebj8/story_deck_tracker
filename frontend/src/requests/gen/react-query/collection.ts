@@ -338,3 +338,98 @@ export function useGetCollectionCount<TData = Awaited<ReturnType<typeof getColle
 
 
 
+/**
+ * Route to get a specific row in a user's collection.
+ * @summary Get Collection Card
+ */
+export const getCollectionCard = (
+    userId: string,
+    cardId: number,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CollectionRead[]>(
+      {url: `/api/collection/${userId}/${cardId}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetCollectionCardQueryKey = (userId: string,
+    cardId: number,) => {
+    return [`/api/collection/${userId}/${cardId}`] as const;
+    }
+
+    
+export const getGetCollectionCardQueryOptions = <TData = Awaited<ReturnType<typeof getCollectionCard>>, TError = ErrorType<void | HTTPValidationError>>(userId: string,
+    cardId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCollectionCardQueryKey(userId,cardId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCollectionCard>>> = ({ signal }) => getCollectionCard(userId,cardId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(userId && cardId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCollectionCardQueryResult = NonNullable<Awaited<ReturnType<typeof getCollectionCard>>>
+export type GetCollectionCardQueryError = ErrorType<void | HTTPValidationError>
+
+
+export function useGetCollectionCard<TData = Awaited<ReturnType<typeof getCollectionCard>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string,
+    cardId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollectionCard>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollectionCard<TData = Awaited<ReturnType<typeof getCollectionCard>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string,
+    cardId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollectionCard>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollectionCard<TData = Awaited<ReturnType<typeof getCollectionCard>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string,
+    cardId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get Collection Card
+ */
+
+export function useGetCollectionCard<TData = Awaited<ReturnType<typeof getCollectionCard>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string,
+    cardId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollectionCard>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetCollectionCardQueryOptions(userId,cardId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
