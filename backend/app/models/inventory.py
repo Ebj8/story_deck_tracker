@@ -34,8 +34,10 @@ class Catalog(Base):
     img_back_url: Mapped[Optional[str]]
 
     # Relationships
-    set: Mapped["Set"] = relationship(back_populates="catalog")
-    artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="catalog")
+    set: Mapped["Set"] = relationship(back_populates="catalog", lazy="joined")
+    artist_lookup: Mapped[List["ArtistLookup"]] = relationship(
+        back_populates="catalog", lazy="selectin"
+    )
 
 
 class Artist(Base):

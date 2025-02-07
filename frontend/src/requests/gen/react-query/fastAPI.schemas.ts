@@ -51,6 +51,20 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
+export interface CollectionRead {
+  user_id: string;
+  card_id: number;
+  qty: number;
+  is_foil?: boolean;
+  /** @maxLength 2 */
+  condition?: string;
+  created_at: string;
+  updated_at: string;
+  created_by_id: string;
+  updated_by_id: string;
+  catalog: CatalogCardComplexRead;
+}
+
 export interface CollectionCreate {
   user_id: string;
   card_id: number;
@@ -84,20 +98,6 @@ export interface CatalogCardRead {
   updated_at: string;
   created_by_id: string;
   updated_by_id: string;
-}
-
-export interface CollectionRead {
-  user_id: string;
-  card_id: number;
-  qty: number;
-  is_foil?: boolean;
-  /** @maxLength 2 */
-  condition?: string;
-  created_at: string;
-  updated_at: string;
-  created_by_id: string;
-  updated_by_id: string;
-  catalog: CatalogCardRead;
 }
 
 export type CatalogCardCreateImgBackUrl = string | null;

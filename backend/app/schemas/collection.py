@@ -4,7 +4,7 @@ Collection pydantic schemas
 
 from pydantic import BaseModel, Field
 from datetime import datetime
-from .catalog import CatalogCardRead
+from .catalog import CatalogCardComplexRead
 
 
 class CollectionBase(BaseModel):
@@ -29,7 +29,7 @@ class CollectionRead(CollectionBase):
     updated_at: datetime
     created_by_id: str
     updated_by_id: str
-    catalog: CatalogCardRead
+    catalog: CatalogCardComplexRead
 
 
 class CollectionCounts(BaseModel):
