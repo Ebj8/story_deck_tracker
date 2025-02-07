@@ -75,6 +75,26 @@ async def get_collection(db: AsyncSession, user_id: int):
     return collection
 
 
+# Get just a single card from a user's collection
+async def get_collection_card(db: AsyncSession, user_id: int, card_id: int):
+    """
+    Get a single card from a user's collection.
+    """
+
+    # Define the query
+    collection_card_query = select(models.Collection).where(
+        models.Collection.user_id == user_id, models.Collection.card_id == card_id
+    )
+
+    # Execute the query
+    result = await db.execute(collection_card_query)
+
+    # Fetch results and convert to a list of dictionaries
+    collection_card = result.scalars().all()
+
+    return collection_card
+
+
 # Edit a row in a user's collection
 async def update_collection_row(db: AsyncSession, collection_row: CollectionUpdate):
     """

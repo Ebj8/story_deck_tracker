@@ -60,6 +60,20 @@ async def get_collection_count(user_id: str, db: dbDep):
     return collection_count
 
 
+@router.get("/{user_id}/{card_id}", response_model=list[CollectionRead])
+async def get_collection_card(user_id: str, card_id: int, db: dbDep):
+    """
+    Route to get a specific row in a user's collection.
+    """
+
+    try:
+        collection_row = await collection_crud.get_collection_card(db, user_id, card_id)
+    except Exception as e:
+        raise e
+
+    return collection_row
+
+
 ### UPDATE ###
 @router.put("/", response_model=CollectionRead)
 async def update_collection_row(collection_row: CollectionCreate, db: dbDep):
