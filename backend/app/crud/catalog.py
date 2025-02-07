@@ -4,7 +4,7 @@ CRUD operations for Catalog route
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 from app.schemas.catalog import CatalogCardCreate
 from app import models
 
@@ -37,6 +37,8 @@ async def get_catalog_cards(db: AsyncSession):
     result = await db.execute(
         select(models.Catalog)
         .order_by(models.Catalog.set_id, models.Catalog.collector_number)
-        .options(joinedload(models.Catalog.set))
+        .options(
+            joinedload(models.Catalog.set), selectinload(models.Catalog.artist_lookup)
+        )
     )
     return result.scalars().all()

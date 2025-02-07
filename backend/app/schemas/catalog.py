@@ -5,6 +5,7 @@ Catalog pydantic schemas
 from pydantic import BaseModel
 from datetime import datetime
 from .set import SetRead
+from .artist_lookup import ArtistLookupRead
 
 
 class CatalogCard(BaseModel):
@@ -26,3 +27,4 @@ class CatalogCardRead(CatalogCardCreate):
     created_by_id: str
     updated_by_id: str
     set: SetRead
+    artist_lookup: list[ArtistLookupRead]

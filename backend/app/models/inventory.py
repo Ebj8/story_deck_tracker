@@ -35,7 +35,7 @@ class Catalog(Base):
 
     # Relationships
     set: Mapped["Set"] = relationship(back_populates="catalog")
-    # artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="catalog")
+    artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="catalog")
 
 
 class Artist(Base):
@@ -59,7 +59,7 @@ class ArtistLookup(Base):
 
     # Relationships
     # artist: Mapped[Artist] = relationship(back_populates="artist_lookup")
-    # catalog: Mapped[Catalog] = relationship(back_populates="artist_lookup")
+    catalog: Mapped[Catalog] = relationship(back_populates="artist_lookup")
 
 
 class Author(Base):
