@@ -26,6 +26,8 @@ class CollectionUpdate(CollectionBase):
 class CollectionRead(CollectionBase):
     created_at: datetime
     updated_at: datetime
+    created_by_id: str
+    updated_by_id: str
 
 
 class CollectionCounts(BaseModel):
