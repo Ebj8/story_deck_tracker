@@ -3,7 +3,11 @@ Set Catalog routes
 """
 
 from fastapi import APIRouter
-from app.schemas.catalog import CatalogCardCreate, CatalogCardRead
+from app.schemas.catalog import (
+    CatalogCardCreate,
+    CatalogCardRead,
+    CatalogCardComplexRead,
+)
 from app.api.deps.db import dbDep
 from app.crud import catalog as catalog_crud
 
@@ -29,7 +33,7 @@ async def create_catalog_card(catalog_card: CatalogCardCreate, db: dbDep):
 
 
 ### READ ###
-@router.get("/", response_model=list[CatalogCardRead])
+@router.get("/", response_model=list[CatalogCardComplexRead])
 async def get_catalog_cards(db: dbDep):
     """
     Route to get all cards in the set catalog.
