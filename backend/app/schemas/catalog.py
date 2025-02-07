@@ -4,6 +4,7 @@ Catalog pydantic schemas
 
 from pydantic import BaseModel
 from datetime import datetime
+from .set import SetRead
 
 
 class CatalogCard(BaseModel):
@@ -24,3 +25,4 @@ class CatalogCardRead(CatalogCardCreate):
     updated_at: datetime
     created_by_id: str
     updated_by_id: str
+    set: SetRead

@@ -5,8 +5,9 @@ Inventory is now referred to as collection throughout the app
 """
 
 from .base import Base
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy import ForeignKey
+from app.models.base import relationship
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
@@ -33,6 +34,7 @@ class Catalog(Base):
     img_back_url: Mapped[Optional[str]]
 
     # Relationships
+    set: Mapped["Set"] = relationship(back_populates="catalog")
     # artist_lookup: Mapped[List["ArtistLookup"]] = relationship(back_populates="catalog")
 
 
@@ -51,6 +53,9 @@ class ArtistLookup(Base):
     artist_id: Mapped[int] = mapped_column(
         ForeignKey("artist.artist_id"), primary_key=True
     )
+
+    # Relationships
+    # catalog: Mapped[Catalog] = relationship(foreign_keys=[card_id])
 
     # Relationships
     # artist: Mapped[Artist] = relationship(back_populates="artist_lookup")
@@ -83,7 +88,7 @@ class Set(Base):
     release_year: Mapped[int]
 
     # Relationships
-    # catalog: Mapped[List[Catalog]] = relationship(back_populates="cards")
+    catalog: Mapped[List[Catalog]] = relationship(back_populates="set")
     # author_lookup: Mapped[List[AuthorLookup]] = relationship(
     #     back_populates="set_authors"
     # )
@@ -100,4 +105,5 @@ class Collection(Base):
     condition: Mapped[str] = mapped_column(primary_key=True)
 
     # Relationships
-    # user: Mapped[User] = relationship(back_populates="collection")
+    user: Mapped["User"] = relationship("User", foreign_keys=[user_id])
+    catalog: Mapped["Catalog"] = relationship("Catalog", foreign_keys=[card_id])
