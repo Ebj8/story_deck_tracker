@@ -34,6 +34,69 @@ import type { ErrorType } from '../../Axios';
 
 
 /**
+ * Route to update a user's collection row.
+ * @summary Update Collection Row
+ */
+export const updateCollectionRow = (
+    collectionCreate: CollectionCreate,
+ ) => {
+      
+      
+      return customInstance<CollectionRead>(
+      {url: `/api/collection/`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: collectionCreate
+    },
+      );
+    }
+  
+
+
+export const getUpdateCollectionRowMutationOptions = <TData = Awaited<ReturnType<typeof updateCollectionRow>>, TError = ErrorType<void | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>, }
+) => {
+const mutationKey = ['updateCollectionRow'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCollectionRow>>, {data: CollectionCreate}> = (props) => {
+          const {data} = props ?? {};
+
+          return  updateCollectionRow(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>}
+
+    export type UpdateCollectionRowMutationResult = NonNullable<Awaited<ReturnType<typeof updateCollectionRow>>>
+    export type UpdateCollectionRowMutationBody = CollectionCreate
+    export type UpdateCollectionRowMutationError = ErrorType<void | HTTPValidationError>
+
+    /**
+ * @summary Update Collection Row
+ */
+export const useUpdateCollectionRow = <TData = Awaited<ReturnType<typeof updateCollectionRow>>, TError = ErrorType<void | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>, }
+): UseMutationResult<
+        TData,
+        TError,
+        {data: CollectionCreate},
+        TContext
+      > => {
+
+      const mutationOptions = getUpdateCollectionRowMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    /**
  * Route to create a new entry into a user's collection.
  * @summary Create Collection Row
  */
@@ -98,6 +161,94 @@ export const useCreateCollectionRow = <TData = Awaited<ReturnType<typeof createC
       return useMutation(mutationOptions);
     }
     /**
+ * Route to get a user's entire collection.
+ * @summary Get Collection
+ */
+export const getCollection = (
+    userId: string,
+ signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<CollectionRead[]>(
+      {url: `/api/collection/${userId}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getGetCollectionQueryKey = (userId: string,) => {
+    return [`/api/collection/${userId}`] as const;
+    }
+
+    
+export const getGetCollectionQueryOptions = <TData = Awaited<ReturnType<typeof getCollection>>, TError = ErrorType<void | HTTPValidationError>>(userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData>>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCollectionQueryKey(userId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCollection>>> = ({ signal }) => getCollection(userId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(userId), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetCollectionQueryResult = NonNullable<Awaited<ReturnType<typeof getCollection>>>
+export type GetCollectionQueryError = ErrorType<void | HTTPValidationError>
+
+
+export function useGetCollection<TData = Awaited<ReturnType<typeof getCollection>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollection>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollection<TData = Awaited<ReturnType<typeof getCollection>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCollection>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetCollection<TData = Awaited<ReturnType<typeof getCollection>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get Collection
+ */
+
+export function useGetCollection<TData = Awaited<ReturnType<typeof getCollection>>, TError = ErrorType<void | HTTPValidationError>>(
+ userId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCollection>>, TError, TData>>, }
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetCollectionQueryOptions(userId,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+/**
  * Route to get the total count of each card in a user's collection.
 
 The values returned are grouped on the card_id, is_foil, and condition columns.
@@ -110,14 +261,14 @@ export const getCollectionCount = (
       
       
       return customInstance<CollectionCounts[]>(
-      {url: `/api/collection/${userId}`, method: 'GET', signal
+      {url: `/api/collection/count/${userId}`, method: 'GET', signal
     },
       );
     }
   
 
 export const getGetCollectionCountQueryKey = (userId: string,) => {
-    return [`/api/collection/${userId}`] as const;
+    return [`/api/collection/count/${userId}`] as const;
     }
 
     

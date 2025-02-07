@@ -58,8 +58,6 @@ export interface CollectionRead {
   is_foil?: boolean;
   /** @maxLength 2 */
   condition?: string;
-  created_by_id: string;
-  updated_by_id: string;
   created_at: string;
   updated_at: string;
 }
@@ -71,6 +69,8 @@ export interface CollectionCreate {
   is_foil?: boolean;
   /** @maxLength 2 */
   condition?: string;
+  created_by_id?: string;
+  updated_by_id?: string;
 }
 
 export interface CollectionCounts {
