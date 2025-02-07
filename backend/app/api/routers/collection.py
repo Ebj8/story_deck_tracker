@@ -30,7 +30,21 @@ async def create_collection_row(collection_row: CollectionCreate, db: dbDep):
 
 
 ### READ ###
-@router.get("/{user_id}", response_model=list[CollectionCounts])
+@router.get("/{user_id}", response_model=list[CollectionRead])
+async def get_collection(user_id: str, db: dbDep):
+    """
+    Route to get a user's entire collection.
+    """
+
+    try:
+        collection = await collection_crud.get_collection(db, user_id)
+    except Exception as e:
+        raise e
+
+    return collection
+
+
+@router.get("/count/{user_id}", response_model=list[CollectionCounts])
 async def get_collection_count(user_id: str, db: dbDep):
     """
     Route to get the total count of each card in a user's collection.

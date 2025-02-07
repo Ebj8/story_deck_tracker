@@ -15,12 +15,7 @@ async def create_collection_row(db: AsyncSession, collection_row: CollectionCrea
     Create a new card entry to a user's collection in the database.
     """
 
-    db_collection_row = models.Collection(
-        **collection_row.model_dump(),
-        # TODO: Replace with actual user id
-        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
-        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
-    )
+    db_collection_row = models.Collection(**collection_row.model_dump())
 
     # Create patient in database
     db.add(db_collection_row)
@@ -58,6 +53,26 @@ async def get_collection_count(db: AsyncSession, user_id: int):
     collection_counts = result.mappings().all()
 
     return collection_counts
+
+
+# get a user's entire collection
+async def get_collection(db: AsyncSession, user_id: int):
+    """
+    Get a user's entire collection.
+    """
+
+    # Define the query
+    collection_query = select(models.Collection).where(
+        models.Collection.user_id == user_id
+    )
+
+    # Execute the query
+    result = await db.execute(collection_query)
+
+    # Fetch results and convert to a list of dictionaries
+    collection = result.scalars().all()
+
+    return collection
 
 
 # Edit a row in a user's collection
