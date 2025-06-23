@@ -18,5 +18,6 @@
       "label": "Run Dev",
       "task": "run dev"
     }
-  ]
+  ],
+  "python.analysis.extraPaths": ["./backend"] 
 }
