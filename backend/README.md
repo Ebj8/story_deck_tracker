@@ -76,6 +76,22 @@ To remove a dependency, run:
 uv remove <package-name>
 ```
 
+### 5. Run the database migrations
+To set up the database schema, you need to run the Alembic migrations. This will create the necessary tables in your PostgreSQL database.
+Make sure your PostgreSQL server is running, then run the following command:
+
+```bash
+cd backend/app
+alembic upgrade head
+```
+
+### 6. Start the FastAPI server
+To start the FastAPI server, run the following command from the `backend` directory:
+
+```bash
+uv run fastapi dev
+```
+
 ## Adding Tables to the database
 
 We use Alembic to manage database migrations such as creating a new table, adding columns, or modifying existing columns. To create a new migration, set your working directory to `backend/app` then run:

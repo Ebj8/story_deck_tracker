@@ -48,3 +48,10 @@ export default tseslint.config({
   },
 })
 ```
+
+# Starting the Frontend
+```bash
+cd frontend
+pnpm install
+pnpm dev
+```
