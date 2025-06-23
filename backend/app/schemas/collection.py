@@ -2,12 +2,17 @@
 Collection pydantic schemas
 """
 
-from pydantic import BaseModel, Field
 from datetime import datetime
-from .catalog import CatalogCardComplexRead
+from pydantic import BaseModel, Field
+from app.schemas.catalog import CatalogCardComplexRead
 
 
 class CollectionBase(BaseModel):
+    """
+    Base schema for collection items.
+    This schema is used for both creation and update operations.
+    """
+
     user_id: str
     card_id: int
     qty: int
@@ -16,15 +21,27 @@ class CollectionBase(BaseModel):
 
 
 class CollectionCreate(CollectionBase):
+    """
+    Schema for creating a new collection item.
+    """
+
     created_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
     updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
 class CollectionUpdate(CollectionBase):
+    """
+    Schema for updating an existing collection item.
+    """
+
     updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
 class CollectionSimpleRead(CollectionBase):
+    """
+    Schema for reading a collection item with minimal details.
+    """
+
     created_at: datetime
     updated_at: datetime
     created_by_id: str
@@ -32,10 +49,18 @@ class CollectionSimpleRead(CollectionBase):
 
 
 class CollectionRead(CollectionSimpleRead):
+    """
+    Schema for reading a collection item with detailed card information.
+    """
+
     catalog: CatalogCardComplexRead
 
 
 class CollectionCounts(BaseModel):
+    """
+    Schema for counting collection items.
+    """
+
     user_id: str
     card_id: int
     is_foil: bool

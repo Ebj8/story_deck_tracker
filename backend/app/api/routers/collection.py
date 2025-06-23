@@ -5,6 +5,7 @@ Set Collection routes
 from fastapi import APIRouter
 from app.schemas.collection import (
     CollectionCreate,
+    CollectionUpdate,
     CollectionRead,
     CollectionCounts,
     CollectionSimpleRead,
@@ -81,7 +82,7 @@ async def get_collection_card(user_id: str, card_id: int, db: dbDep):
 
 ### UPDATE ###
 @router.put("/", response_model=CollectionSimpleRead)
-async def update_collection_row(collection_row: CollectionCreate, db: dbDep):
+async def update_collection_row(collection_row: CollectionUpdate, db: dbDep):
     """
     Route to update a user's collection row.
     """

@@ -1,5 +1,4 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { useEffect, useState } from "react";
 import Counter from "@/components/ui/Counter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -15,156 +14,126 @@ import {
 interface CardBoxProps {
   card: CatalogCardRead;
   collection: CollectionRead[] | undefined;
+  refetchCollection: () => void;
 }
 
-const CardBox = ({ card, collection }: CardBoxProps) => {
-  // colored is used to determine if a card should be colored or grayscale
-  const [colored, setColored] = useState(false);
-  // Fetch the user to determine if we should render collection update buttons
+const CardBox = ({ card, collection, refetchCollection }: CardBoxProps) => {
   const { user } = useUser();
 
-  // Filter collections
-  const filteredCollection = collection?.filter(
-    (item) => item.card_id === card.card_id
-  );
-  const regCollection = filteredCollection?.filter((item) => !item.is_foil);
-  const foilCollection = filteredCollection?.filter((item) => item.is_foil);
+  // Filter collections for this card
+  const regCollection =
+    collection?.filter(
+      (item) => item.card_id === card.card_id && !item.is_foil
+    ) || [];
 
-  // Initialize state
-  const [regQty, setRegQty] = useState(0);
-  const [foilQty, setFoilQty] = useState(0);
-  const [regNMQty, setRegNMQty] = useState(0);
-  const [foilNMQty, setFoilNMQty] = useState(0);
+  const foilCollection =
+    collection?.filter(
+      (item) => item.card_id === card.card_id && item.is_foil
+    ) || [];
+
+  const regNM = regCollection.find((item) => item.condition === "NM");
+  const foilNM = foilCollection.find((item) => item.condition === "NM");
+
+  const regQty = regCollection.reduce((sum, c) => sum + c.qty, 0);
+  const foilQty = foilCollection.reduce((sum, c) => sum + c.qty, 0);
+  const regNMQty = regNM?.qty ?? 0;
+  const foilNMQty = foilNM?.qty ?? 0;
 
   const createCollectionRow = useCreateCollectionRow();
   const updateCollectionRow = useUpdateCollectionRow();
 
-  // Update state only when collection changes
-  useEffect(() => {
-    // Sum the total qunatities across conditions of regular and foil cards
-    setRegQty(regCollection?.reduce((total, item) => total + item.qty, 0) ?? 0);
-    setFoilQty(
-      foilCollection?.reduce((total, item) => total + item.qty, 0) ?? 0
-    );
-
-    // Get just the quantities for the first NM card row
-    setRegNMQty(
-      regCollection?.find((item) => item?.condition === "NM")?.qty ?? 0
-    );
-    setFoilNMQty(
-      foilCollection?.find((item) => item?.condition === "NM")?.qty ?? 0
-    );
-  }, [regCollection, foilCollection]);
-
-  // Handle color animation
-  useEffect(() => {
-    setColored(regQty > 0 || foilQty > 0);
-  }, [regQty, foilQty]);
-
   const handleRegIncrease = () => {
-    if (regNMQty === 0 && user != undefined) {
-      createCollectionRow.mutate(
-        {
-          data: {
-            user_id: user?.uid,
-            card_id: card.card_id,
-            is_foil: false,
-            qty: 1,
-            condition: "NM",
-          },
+    const mutation = regNMQty === 0 ? createCollectionRow : updateCollectionRow;
+
+    mutation.mutate(
+      {
+        data: {
+          user_id: user?.uid ?? "",
+          card_id: card.card_id,
+          is_foil: false,
+          qty: regNMQty + 1,
+          condition: "NM",
         },
-        {
-          onSuccess: (response) => {
-            console.log("Set created successfully!", response);
-          },
-          onError: (error) => {
-            console.error("Error creating set:", error);
-          },
-        }
-      );
-    } else {
-      updateCollectionRow.mutate(
-        {
-          data: {
-            user_id: user?.uid ?? "",
-            card_id: card.card_id,
-            is_foil: false,
-            qty: regNMQty + 1,
-            condition: "NM",
-          },
-        },
-        {
-          onSuccess: (response) => {
-            console.log("Set updated successfully!", response);
-          },
-          onError: (error) => {
-            console.error("Error updating set:", error);
-          },
-        }
-      );
-    }
-    setRegQty((prev) => prev + 1);
-    setRegNMQty((prev) => prev + 1);
+      },
+      {
+        onSuccess: refetchCollection, // 👈 just call this
+        onError: (error) => console.error("Error updating regular:", error),
+      }
+    );
   };
 
   const handleFoilIncrease = () => {
-    if (foilNMQty === 0 && user != undefined) {
-      createCollectionRow.mutate(
-        {
-          data: {
-            user_id: user?.uid,
-            card_id: card.card_id,
-            is_foil: true,
-            qty: 1,
-            condition: "NM",
-          },
+    const mutation =
+      foilNMQty === 0 ? createCollectionRow : updateCollectionRow;
+
+    mutation.mutate(
+      {
+        data: {
+          user_id: user?.uid ?? "",
+          card_id: card.card_id,
+          is_foil: true,
+          qty: foilNMQty + 1,
+          condition: "NM",
         },
-        {
-          onSuccess: (response) => {
-            console.log("Set created successfully!", response);
-          },
-          onError: (error) => {
-            console.error("Error creating set:", error);
-          },
-        }
-      );
-    } else {
-      updateCollectionRow.mutate(
-        {
-          data: {
-            user_id: user?.uid ?? "",
-            card_id: card.card_id,
-            is_foil: true,
-            qty: foilNMQty + 1,
-            condition: "NM",
-          },
-        },
-        {
-          onSuccess: (response) => {
-            console.log("Set updated successfully!", response);
-          },
-          onError: (error) => {
-            console.error("Error updating set:", error);
-          },
-        }
-      );
-    }
-    setFoilQty((prev) => prev + 1);
-    setFoilNMQty((prev) => prev + 1);
+      },
+      {
+        onSuccess: refetchCollection,
+        onError: (error) => console.error("Error updating foil:", error),
+      }
+    );
   };
 
-  // Default image if no image is provided
+  const handleRegDecrease = () => {
+    if (regNMQty === 0) return;
+
+    updateCollectionRow.mutate(
+      {
+        data: {
+          user_id: user?.uid ?? "",
+          card_id: card.card_id,
+          is_foil: false,
+          qty: Math.max(0, regNMQty - 1),
+          condition: "NM",
+        },
+      },
+      {
+        onSuccess: refetchCollection,
+        onError: (error) => console.error("Error decreasing regular:", error),
+      }
+    );
+  };
+
+  const handleFoilDecrease = () => {
+    if (foilNMQty === 0) return;
+
+    updateCollectionRow.mutate(
+      {
+        data: {
+          user_id: user?.uid ?? "",
+          card_id: card.card_id,
+          is_foil: true,
+          qty: Math.max(0, foilNMQty - 1),
+          condition: "NM",
+        },
+      },
+      {
+        onSuccess: refetchCollection,
+        onError: (error) => console.error("Error decreasing foil:", error),
+      }
+    );
+  };
+
   const imageUrl =
     card.img_front_url ||
     "https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fplaceholder_image.jpeg?alt=media&token=0de3b6fe-c7eb-4ab4-9a7c-49d1aadb95a5";
+
+  const colored = regQty > 0 || foilQty > 0;
 
   return (
     <Card className="m-4 w-[100%]">
       <CardContent>
         <AnimatePresence mode="popLayout">
           <motion.img
-            // whenever key changes the animation triggers so we trigger the animation
-            // whenever card quantities change
             key={regQty + foilQty}
             className="rounded-lg m-4 mx-auto"
             src={imageUrl}
@@ -174,24 +143,23 @@ const CardBox = ({ card, collection }: CardBoxProps) => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{
               duration: 0.4,
-              scale: { type: "spring", visualDuration: 0.4, bounce: 0.5 },
+              scale: { type: "spring", bounce: 0.5 },
             }}
           />
         </AnimatePresence>
         {user && (
           <div className="grid grid-cols-2 gap-8 items-center justify-center">
-            {/* Regular & Foil Counters */}
             <Counter
               label="Regular"
               count={regQty}
               onIncrement={handleRegIncrease}
-              onDecrement={() => setRegQty((prev) => Math.max(0, prev - 1))}
+              onDecrement={handleRegDecrease}
             />
             <Counter
               label="Foil"
               count={foilQty}
               onIncrement={handleFoilIncrease}
-              onDecrement={() => setFoilQty((prev) => Math.max(0, prev - 1))}
+              onDecrement={handleFoilDecrease}
             />
           </div>
         )}

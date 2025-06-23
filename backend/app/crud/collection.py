@@ -2,11 +2,11 @@
 CRUD operations for Collection route
 """
 
+from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func, select
 from app.schemas.collection import CollectionCreate, CollectionUpdate
 from app import models
-from datetime import datetime
 
 
 # Add a row of data to a user's collection
@@ -25,7 +25,7 @@ async def create_collection_row(db: AsyncSession, collection_row: CollectionCrea
 
 
 # Get the total count of each card in a user's collection
-async def get_collection_count(db: AsyncSession, user_id: int):
+async def get_collection_count(db: AsyncSession, user_id: str):
     """
     Get the total count of each card in a user's collection.
     """
@@ -56,7 +56,7 @@ async def get_collection_count(db: AsyncSession, user_id: int):
 
 
 # get a user's entire collection
-async def get_collection(db: AsyncSession, user_id: int):
+async def get_collection(db: AsyncSession, user_id: str):
     """
     Get a user's entire collection.
     """
@@ -79,7 +79,7 @@ async def get_collection(db: AsyncSession, user_id: int):
 
 
 # Get just a single card from a user's collection
-async def get_collection_card(db: AsyncSession, user_id: int, card_id: int):
+async def get_collection_card(db: AsyncSession, user_id: str, card_id: int):
     """
     Get a single card from a user's collection.
     """
@@ -121,5 +121,10 @@ async def update_collection_row(db: AsyncSession, collection_row: CollectionUpda
     existing_collection_row.updated_by_id = collection_row.updated_by_id
     existing_collection_row.updated_at = datetime.now()
 
+    if existing_collection_row.qty <= 0:
+        # If the quantity is 0 or less, delete the row
+        await db.delete(existing_collection_row)
+
     await db.commit()
+
     return existing_collection_row
