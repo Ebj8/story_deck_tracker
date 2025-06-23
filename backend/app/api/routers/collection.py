@@ -3,7 +3,12 @@ Set Collection routes
 """
 
 from fastapi import APIRouter
-from app.schemas.collection import CollectionCreate, CollectionRead, CollectionCounts
+from app.schemas.collection import (
+    CollectionCreate,
+    CollectionRead,
+    CollectionCounts,
+    CollectionSimpleRead,
+)
 from app.api.deps.db import dbDep
 from app.crud import collection as collection_crud
 
@@ -12,7 +17,7 @@ router = APIRouter()
 
 
 ### CREATE ###
-@router.post("/", response_model=CollectionRead)
+@router.post("/", response_model=CollectionSimpleRead)
 async def create_collection_row(collection_row: CollectionCreate, db: dbDep):
     """
     Route to create a new entry into a user's collection.
@@ -75,7 +80,7 @@ async def get_collection_card(user_id: str, card_id: int, db: dbDep):
 
 
 ### UPDATE ###
-@router.put("/", response_model=CollectionRead)
+@router.put("/", response_model=CollectionSimpleRead)
 async def update_collection_row(collection_row: CollectionCreate, db: dbDep):
     """
     Route to update a user's collection row.

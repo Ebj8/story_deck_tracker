@@ -38,6 +38,7 @@ class Catalog(Base):
     artist_lookup: Mapped[List["ArtistLookup"]] = relationship(
         back_populates="catalog", lazy="selectin"
     )
+    collection: Mapped[List["Collection"]] = relationship(back_populates="catalog")
 
 
 class Artist(Base):
@@ -108,4 +109,6 @@ class Collection(Base):
 
     # Relationships
     user: Mapped["User"] = relationship("User", foreign_keys=[user_id])
-    catalog: Mapped["Catalog"] = relationship("Catalog", foreign_keys=[card_id])
+    catalog: Mapped["Catalog"] = relationship(
+        "Catalog", foreign_keys=[card_id], back_populates="collection", lazy="joined"
+    )

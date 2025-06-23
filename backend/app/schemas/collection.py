@@ -24,11 +24,14 @@ class CollectionUpdate(CollectionBase):
     updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
-class CollectionRead(CollectionBase):
+class CollectionSimpleRead(CollectionBase):
     created_at: datetime
     updated_at: datetime
     created_by_id: str
     updated_by_id: str
+
+
+class CollectionRead(CollectionSimpleRead):
     catalog: CatalogCardComplexRead
 
 
