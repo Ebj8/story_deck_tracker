@@ -130,7 +130,7 @@ const CardBox = ({ card, collection, refetchCollection }: CardBoxProps) => {
   const colored = regQty > 0 || foilQty > 0;
 
   return (
-    <Card className="m-4">
+    <Card className="mt-4 w-[250px]">
       <CardContent>
         <AnimatePresence mode="popLayout">
           <motion.img
