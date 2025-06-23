@@ -1,0 +1,22 @@
+{
+  "[python]": {
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.formatOnSave": true
+  },
+  // This is to make sure that task terminals use your zsh profile
+  "terminal.integrated.profiles.osx": {
+    "zsh": { "path": "/bin/zsh", "args": ["-l", "-i"] }
+  },
+  "VsCodeTaskButtons.showCounter": false,
+  "VsCodeTaskButtons.tasks": [
+    {
+      "label": "Run Dev",
+      "task": "run dev"
+    }
+  ]
+}
