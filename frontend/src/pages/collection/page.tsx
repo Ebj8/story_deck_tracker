@@ -14,9 +14,6 @@ const CollectionPage = () => {
   );
   const [cardView, setCardView] = useState(true);
 
-  const numCards = data?.length || 0;
-  const numRows = Math.ceil(numCards / 3);
-
   return (
     <div className="relative min-h-screen">
       {/* Switch positioned at the top right */}
@@ -32,20 +29,16 @@ const CollectionPage = () => {
       <div className="pt-12">
         {cardView ? (
           <div>
-            {Array.from({ length: numRows }).map((_, rowIndex) => (
-              <div key={rowIndex} className="flex flex-row items-center">
-                {data
-                  ?.slice(rowIndex * 3, rowIndex * 3 + 3)
-                  .map((card, index) => (
-                    <CardBox
-                      key={index}
-                      card={card}
-                      collection={collection}
-                      refetchCollection={refetchCollection}
-                    />
-                  ))}
-              </div>
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {data?.map((card, index) => (
+                <CardBox
+                  key={index}
+                  card={card}
+                  collection={collection}
+                  refetchCollection={refetchCollection}
+                />
+              ))}
+            </div>
           </div>
         ) : (
           <CollectionTable />
