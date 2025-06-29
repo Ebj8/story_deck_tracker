@@ -6,7 +6,7 @@ import CreateCatalogPage from "@/pages/admin/catalog/create/page";
 import { Routes, Route } from "react-router";
 import { Layout } from "@/pages/layout";
 import AdminRoutes from "@/auth/AdminRoutes";
-import { useUser } from "@/auth/userContext";
+import { useUser } from "@/auth/UserContext";
 import { useState, useEffect } from "react";
 import "./index.css";
 
