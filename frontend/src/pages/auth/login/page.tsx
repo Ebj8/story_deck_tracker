@@ -176,7 +176,7 @@ export default function LoginPage(): JSX.Element {
               </div>
 
               {form.formState.errors.root?.serverError && (
-                <ErrorText text={"Error logging in. Please contact support."} />
+                <ErrorText text={"Error, couldn't login"} />
               )}
             </form>
           </Form>

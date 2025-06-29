@@ -37,6 +37,7 @@ interface SignUpForm {
   lastName?: string; // Optional field
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 /**
@@ -47,16 +48,19 @@ export default function SignupPage(): JSX.Element {
   const { user } = useUser();
   const createUser = useCreateUser();
 
+  const form = useForm<SignUpForm>({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   if (user) {
     return <Navigate to="/" />;
   }
-
-  const form = useForm<SignUpForm>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
 
   async function onSubmit(formData: SignUpForm) {
     try {
@@ -88,7 +92,6 @@ export default function SignupPage(): JSX.Element {
 
       if (userCredential.user) {
         await sendEmailVerification(userCredential.user);
-        alert("Verification email sent! Please check your inbox.");
       }
     } catch (error) {
       form.setError("root.serverError", {
@@ -202,6 +205,28 @@ export default function SignupPage(): JSX.Element {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="password"
+                        autoComplete="new-password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                rules={{
+                  required: "Confirm Password is required",
+                  validate: (value, formData) =>
+                    value === formData.password || "Passwords must match",
+                }}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
                       <Input
                         {...field}

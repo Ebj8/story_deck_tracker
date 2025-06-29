@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router";
 import { sendEmailVerification } from "firebase/auth";
 import { useUser } from "@/auth/UserContext";
@@ -17,16 +17,28 @@ export default function VerifyEmailPage(): JSX.Element {
   const { user } = useUser();
   const { toast } = useToast();
   const [resent, setResent] = useState(false);
+  const [countdown, setCountdown] = useState(0); // New state for countdown
 
-  // If user is already verified, redirect
-  if (user && user.emailVerified) {
+  useEffect(() => {
+    const refreshUser = async () => {
+      if (user) {
+        await user.reload();
+      }
+    };
+    refreshUser();
+  }, [user]);
+
+  // If user is already verified or the user isn't authenticated, redirect
+  if ((user && user.emailVerified) || !user) {
     return <Navigate to="/" />;
   }
 
-  // Resend verification email
+  // Handle resend email
   const resendEmail = async () => {
     if (user) {
       try {
+        setResent(true);
+        setCountdown(30); // Start countdown from 30
         await sendEmailVerification(user);
         toast({
           title: "Verification Email Sent",
@@ -39,10 +51,25 @@ export default function VerifyEmailPage(): JSX.Element {
           title: "Error Sending Email",
           description: err.message || "Failed to send verification email.",
         });
+        setResent(false);
+        setCountdown(0);
       }
     }
-    setTimeout(() => setResent(false), 30000); // Reset resent state after 30 seconds
   };
+
+  // Countdown effect
+  useEffect(() => {
+    if (countdown === 0) {
+      setResent(false); // Re-enable button
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setCountdown((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [countdown]);
 
   return (
     <div className="flex justify-center items-center p-4">
@@ -56,8 +83,8 @@ export default function VerifyEmailPage(): JSX.Element {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Separator />
-          <Button variant="outline" onClick={resendEmail}>
-            Resend Verification Email
+          <Button variant="outline" onClick={resendEmail} disabled={resent}>
+            {resent ? `Resend in ${countdown}s` : "Resend Verification Email"}
           </Button>
           <p className="text-muted-foreground text-sm">
             Once you’ve verified your email, refresh this page.
