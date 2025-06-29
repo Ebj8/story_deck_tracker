@@ -24,9 +24,11 @@ import { Filter, Table, Grid3X3, ChevronLeft } from "lucide-react";
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
   const { user } = useUser();
-  const { data: collection, refetch: refetchCollection } = useGetCollection(
-    user?.uid || ""
-  );
+  const {
+    data: collection,
+    refetch: refetchCollection,
+    isLoading: collectionIsLoading,
+  } = useGetCollection(user?.uid || "");
   const { data: sets } = useGetSets();
   const [isTableView, setIsTableView] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(true);
@@ -83,6 +85,11 @@ export default function StoryDeckTracker() {
   const collectedCount = filteredCards?.filter((card) =>
     collectionCardIds.includes(card.card_id)
   ).length;
+
+  // Filter the collection to only include cards that are in the filteredCards
+  const filteredCollection = collection?.filter((card) =>
+    filteredCards?.some((filteredCard) => filteredCard.card_id === card.card_id)
+  );
 
   const FilterContent = () => (
     <div className="space-y-6">
@@ -309,7 +316,10 @@ export default function StoryDeckTracker() {
               ))}
             </div>
           ) : (
-            <CollectionTable />
+            <CollectionTable
+              data={filteredCollection}
+              isLoading={collectionIsLoading}
+            />
           )}
         </div>
       </div>

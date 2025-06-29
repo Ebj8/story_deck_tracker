@@ -1,20 +1,21 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { DataTable } from "@/components/ui/datatable";
 import { Button } from "@/components/ui/button";
-import {
-  useGetCollection,
-  useUpdateCollectionRow,
-} from "@/requests/gen/react-query/collection";
+import { useUpdateCollectionRow } from "@/requests/gen/react-query/collection";
 import { CollectionRead } from "@/requests/gen/react-query/fastAPI.schemas";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 import { useUser } from "@/auth/UserContext";
 import { Input } from "@/components/ui/input";
 
-const CollectionTable = () => {
+interface CollectionTableProps {
+  data: CollectionRead[] | undefined;
+  isLoading: boolean;
+}
+
+const CollectionTable = ({ data, isLoading }: CollectionTableProps) => {
   const { user } = useUser();
   const queryClient = useQueryClient();
-  const { data, isLoading } = useGetCollection(user?.uid || "");
 
   const updateMutation = useUpdateCollectionRow();
 
