@@ -1,4 +1,4 @@
-import { useUser } from "@/auth/userContext";
+import { useUser } from "@/auth/UserContext";
 import { useGetUser } from "@/requests/gen/react-query/user";
 
 const AboutPage = () => {
