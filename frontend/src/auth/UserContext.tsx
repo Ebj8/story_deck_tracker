@@ -43,8 +43,13 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   }, [user, refetch]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        await currentUser.reload(); // force latest info from Firebase
+        setUser(auth.currentUser); // update with the reloaded user
+      } else {
+        setUser(null);
+      }
     });
 
     return () => unsubscribe();

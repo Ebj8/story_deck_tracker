@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useToast } from "@/hooks/use-toast";
 
 export default function VerifyEmailPage(): JSX.Element {
   const { user } = useUser();
+  const { toast } = useToast();
   const [resent, setResent] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
   // If user is already verified, redirect
   if (user && user.emailVerified) {
@@ -27,17 +28,24 @@ export default function VerifyEmailPage(): JSX.Element {
     if (user) {
       try {
         await sendEmailVerification(user);
-        setResent(true);
-        setError(null);
+        toast({
+          title: "Verification Email Sent",
+          description: "Please check your inbox for the verification link.",
+        });
       } catch (err: any) {
-        setError("Failed to send verification email. Please try again later.");
         console.error(err.message);
+        toast({
+          variant: "destructive",
+          title: "Error Sending Email",
+          description: err.message || "Failed to send verification email.",
+        });
       }
     }
+    setTimeout(() => setResent(false), 30000); // Reset resent state after 30 seconds
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen p-4">
+    <div className="flex justify-center items-center p-4">
       <Card className="w-full sm:max-w-md text-center">
         <CardHeader>
           <CardTitle>Verify Your Email</CardTitle>
@@ -48,12 +56,6 @@ export default function VerifyEmailPage(): JSX.Element {
         </CardHeader>
         <CardContent className="flex flex-col gap-4">
           <Separator />
-          {resent && (
-            <p className="text-green-600 text-sm">
-              Verification email resent! Please check your inbox.
-            </p>
-          )}
-          {error && <p className="text-red-600 text-sm">{error}</p>}
           <Button variant="outline" onClick={resendEmail}>
             Resend Verification Email
           </Button>
