@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/auth/UserContext";
+import { useNavigate } from "react-router";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { user, dbUser, signOutUser } = useUser();
 
   return (
@@ -34,8 +36,11 @@ const Navbar = () => {
               Sign Out
             </Button>
           ) : (
-            <Button className="primary">
-              <a href="auth/login">Sign In</a>
+            <Button
+              className="primary"
+              onClick={() => navigate("/auth/login/")}
+            >
+              Sign In
             </Button>
           )}
         </div>
