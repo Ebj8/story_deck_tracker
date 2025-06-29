@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
 import Counter from "@/components/ui/Counter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -127,44 +126,42 @@ const CardBox = ({ card, collection, refetchCollection }: CardBoxProps) => {
     card.img_front_url ||
     "https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fplaceholder_image.jpeg?alt=media&token=0de3b6fe-c7eb-4ab4-9a7c-49d1aadb95a5";
 
-  const colored = regQty > 0 || foilQty > 0;
+  const colored = regQty > 0 || foilQty > 0 || !user;
 
   return (
-    <Card className="mt-4 w-[250px]">
-      <CardContent>
-        <AnimatePresence mode="popLayout">
-          <motion.img
-            key={regQty + foilQty}
-            className="rounded-lg m-4 mx-auto"
-            src={imageUrl}
-            alt="Card Image"
-            initial={{ opacity: 0, scale: 0 }}
-            style={{ filter: colored ? "none" : "grayscale(100%)" }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.4,
-              scale: { type: "spring", bounce: 0.5 },
-            }}
+    <div className="mt-4">
+      <AnimatePresence mode="popLayout">
+        <motion.img
+          key={regQty + foilQty}
+          className="rounded-lg m-4 mx-auto w-[230px] h-[320px]"
+          src={imageUrl}
+          alt="Card Image"
+          initial={{ opacity: 0, scale: 0 }}
+          style={{ filter: colored ? "none" : "grayscale(100%)" }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 0.4,
+            scale: { type: "spring", bounce: 0.5 },
+          }}
+        />
+      </AnimatePresence>
+      {user && (
+        <div className="grid grid-cols-2 gap-8 items-center justify-center">
+          <Counter
+            label="Regular"
+            count={regQty}
+            onIncrement={handleRegIncrease}
+            onDecrement={handleRegDecrease}
           />
-        </AnimatePresence>
-        {user && (
-          <div className="grid grid-cols-2 gap-8 items-center justify-center">
-            <Counter
-              label="Regular"
-              count={regQty}
-              onIncrement={handleRegIncrease}
-              onDecrement={handleRegDecrease}
-            />
-            <Counter
-              label="Foil"
-              count={foilQty}
-              onIncrement={handleFoilIncrease}
-              onDecrement={handleFoilDecrease}
-            />
-          </div>
-        )}
-      </CardContent>
-    </Card>
+          <Counter
+            label="Foil"
+            count={foilQty}
+            onIncrement={handleFoilIncrease}
+            onDecrement={handleFoilDecrease}
+          />
+        </div>
+      )}
+    </div>
   );
 };
 

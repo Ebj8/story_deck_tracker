@@ -90,7 +90,7 @@ export default function StoryDeckTracker() {
         {/* Desktop Filters Sidebar */}
         <div
           className={`hidden min-h-full md:block bg-white border-r border-gray-200 transition-all duration-300 ${
-            filtersOpen ? "w-1/4" : "w-12 items-center justify-center"
+            filtersOpen ? "w-1/5" : "w-12 items-center justify-center"
           }`}
         >
           <div className="p-4 w-full">
@@ -135,37 +135,45 @@ export default function StoryDeckTracker() {
         </div>
 
         {/* Main Content */}
-        <div className="flex-1 p-4 sm:p-6">
+        <div
+          className={`flex-1 p-4 sm:p-6 sm:pr-[10%] transition-all duration-300 ${
+            !filtersOpen ? "sm:pl-[10%]" : ""
+          }`}
+        >
           {/* View Controls */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="text-sm">
                 {filteredCards?.length} cards
               </Badge>
-              <Badge variant="outline" className="text-sm">
-                {collectedCount} collected
-              </Badge>
-            </div>
-            <div className="flex items-center gap-2">
-              <Label htmlFor="table-view" className="text-sm">
-                Switch to Table
-              </Label>
-              <Switch
-                id="table-view"
-                checked={isTableView}
-                onCheckedChange={setIsTableView}
-              />
-              {isTableView ? (
-                <Table className="w-4 h-4" />
-              ) : (
-                <Grid3X3 className="w-4 h-4" />
+              {user && (
+                <Badge variant="outline" className="text-sm">
+                  {collectedCount} collected
+                </Badge>
               )}
             </div>
+            {user && (
+              <div className="flex items-center gap-2">
+                <Label htmlFor="table-view" className="text-sm">
+                  Switch to Table
+                </Label>
+                <Switch
+                  id="table-view"
+                  checked={isTableView}
+                  onCheckedChange={setIsTableView}
+                />
+                {isTableView ? (
+                  <Table className="w-4 h-4" />
+                ) : (
+                  <Grid3X3 className="w-4 h-4" />
+                )}
+              </div>
+            )}
           </div>
 
           {/* Cards Grid - Responsive */}
           {!isTableView ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-center">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start justify-items-center gap-4">
               {filteredCards?.map((card, index) => (
                 <CardBox
                   key={index}
