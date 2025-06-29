@@ -11,15 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Filter, Table, Grid3X3, ChevronLeft } from "lucide-react";
+import FilterContent from "@/pages/collection/FilterContent";
 
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
@@ -91,152 +84,6 @@ export default function StoryDeckTracker() {
     filteredCards?.some((filteredCard) => filteredCard.card_id === card.card_id)
   );
 
-  const FilterContent = () => (
-    <div className="space-y-6">
-      {/* Year Filter */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium">Release Year</Label>
-        <Select value={selectedYear} onValueChange={setSelectedYear}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem key="all_years" value="All Years">
-              All Years
-            </SelectItem>
-            {releaseYears?.map((year) => (
-              <SelectItem key={year} value={year.toString()}>
-                {year.toString()}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-      <Separator />
-      {/* Set Filter */}
-      <div className="space-y-2">
-        <Label className="text-sm font-medium">Set</Label>
-        <Select value={selectedSet} onValueChange={setSelectedSet}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem key="all" value="All Sets">
-              All Sets
-            </SelectItem>
-            {sets?.map((set) => (
-              <SelectItem key={set.set_id} value={set.set_name}>
-                {set.set_name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <Separator />
-
-      {/* Collection Status */}
-      <div className="space-y-3">
-        <Label className="text-sm font-medium">Collection Status</Label>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="all"
-              name="collection"
-              value="all"
-              checked={collectionFilter === "all"}
-              onChange={(e) => setCollectionFilter(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="all" className="text-sm">
-              All Cards
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="collected"
-              name="collection"
-              value="collected"
-              checked={collectionFilter === "collected"}
-              onChange={(e) => setCollectionFilter(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="collected" className="text-sm">
-              Collected Only
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="uncollected"
-              name="collection"
-              value="uncollected"
-              checked={collectionFilter === "uncollected"}
-              onChange={(e) => setCollectionFilter(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="uncollected" className="text-sm">
-              Missing Only
-            </Label>
-          </div>
-        </div>
-      </div>
-
-      <Separator />
-
-      {/* Variant Options */}
-      <div className="space-y-3">
-        <Label className="text-sm font-medium">Collection Status</Label>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="all"
-              name="variants"
-              value="all"
-              checked={showVariants === "all"}
-              onChange={(e) => setShowVariants(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="all" className="text-sm">
-              All Cards
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="none"
-              name="variants"
-              value="none"
-              checked={showVariants === "none"}
-              onChange={(e) => setShowVariants(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="collected" className="text-sm">
-              No Variants
-            </Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <input
-              type="radio"
-              id="pure_nonsense"
-              name="variants"
-              value="pure_nonsense"
-              checked={showVariants === "pure_nonsense"}
-              onChange={(e) => setShowVariants(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor="uncollected" className="text-sm">
-              Pure Nonsense
-            </Label>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen w-screen bg-gray-50">
       <div className="flex min-h-screen">
@@ -270,7 +117,20 @@ export default function StoryDeckTracker() {
               </Button>
             </div>
 
-            {filtersOpen && <FilterContent />}
+            {filtersOpen && (
+              <FilterContent
+                selectedYear={selectedYear}
+                setSelectedYear={setSelectedYear}
+                selectedSet={selectedSet}
+                setSelectedSet={setSelectedSet}
+                collectionFilter={collectionFilter}
+                setCollectionFilter={setCollectionFilter}
+                showVariants={showVariants}
+                setShowVariants={setShowVariants}
+                releaseYears={releaseYears}
+                sets={sets}
+              />
+            )}
           </div>
         </div>
 
