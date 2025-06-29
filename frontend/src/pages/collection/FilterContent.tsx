@@ -10,6 +10,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import type { SetRead } from "@/requests/gen/react-query/fastAPI.schemas";
+import { useUser } from "@/auth/UserContext";
 
 interface FilterContentProps {
   selectedYear: string;
@@ -36,6 +37,8 @@ export default function FilterContent({
   releaseYears,
   sets,
 }: FilterContentProps) {
+  const { user } = useUser();
+
   return (
     <div className="space-y-6">
       {/* Year Filter */}
@@ -81,30 +84,34 @@ export default function FilterContent({
       <Separator />
 
       {/* Collection Status */}
-      <div className="space-y-3">
-        <Label className="text-sm font-medium">Collection Status</Label>
-        {["all", "collected", "uncollected"].map((option) => (
-          <div className="flex items-center space-x-2" key={option}>
-            <input
-              type="radio"
-              id={option}
-              name="collection"
-              value={option}
-              checked={collectionFilter === option}
-              onChange={(e) => setCollectionFilter(e.target.value)}
-              className="w-4 h-4 text-purple-600"
-            />
-            <Label htmlFor={option} className="text-sm capitalize">
-              {option === "all"
-                ? "All Cards"
-                : option === "collected"
-                ? "Collected Only"
-                : "Missing Only"}
-            </Label>
+      {user && (
+        <>
+          <div className="space-y-3">
+            <Label className="text-sm font-medium">Collection Status</Label>
+            {["all", "collected", "uncollected"].map((option) => (
+              <div className="flex items-center space-x-2" key={option}>
+                <input
+                  type="radio"
+                  id={option}
+                  name="collection"
+                  value={option}
+                  checked={collectionFilter === option}
+                  onChange={(e) => setCollectionFilter(e.target.value)}
+                  className="w-4 h-4 text-purple-600"
+                />
+                <Label htmlFor={option} className="text-sm capitalize">
+                  {option === "all"
+                    ? "All Cards"
+                    : option === "collected"
+                    ? "Collected Only"
+                    : "Missing Only"}
+                </Label>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <Separator />
+          <Separator />
+        </>
+      )}
 
       {/* Variant Options */}
       <div className="space-y-3">
