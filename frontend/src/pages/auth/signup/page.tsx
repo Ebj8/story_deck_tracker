@@ -1,9 +1,10 @@
 import { useForm } from "react-hook-form";
 import { Link, Navigate } from "react-router";
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendEmailVerification,
 } from "firebase/auth";
 import GoogleLogo from "@/assets/google-logo.svg";
 import { Button } from "@/components/ui/button";
@@ -26,46 +27,79 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import ErrorText from "@/components/universal/ErrorText";
-import { useUser } from "@/auth/userContext";
+import { useUser } from "@/auth/UserContext";
+import { useCreateUser } from "@/requests/gen/react-query/user";
 
 const googleProvider = new GoogleAuthProvider();
 
-interface LoginForm {
+interface SignUpForm {
+  firstName: string;
+  lastName?: string; // Optional field
   email: string;
   password: string;
 }
 
 /**
- * Login page for users to sign in
- * @returns {JSX.Element} LoginPage component
+ * Signup page for users to create an account
+ * @returns {JSX.Element} SignupPage component
  */
-export default function LoginPage(): JSX.Element {
+export default function SignupPage(): JSX.Element {
   const { user } = useUser();
+  const createUser = useCreateUser();
 
   if (user) {
     return <Navigate to="/" />;
   }
 
-  const form = useForm<LoginForm>({
+  const form = useForm<SignUpForm>({
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  async function onSubmit(formData: LoginForm) {
+  async function onSubmit(formData: SignUpForm) {
     try {
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      );
+      // Create user in the database
+      await createUser.mutate(
+        {
+          data: {
+            user_id: userCredential.user.uid,
+            user_first: formData.firstName,
+            user_last: formData.lastName || "", // Optional field
+            email: formData.email,
+          },
+        },
+        {
+          onError: (error) => {
+            form.setError("root.serverError", {
+              type: error.code,
+              message: error.message,
+            });
+            console.error("Error creating user in database:", error.message);
+          },
+        }
+      );
+
+      if (userCredential.user) {
+        await sendEmailVerification(userCredential.user);
+        alert("Verification email sent! Please check your inbox.");
+      }
     } catch (error) {
       form.setError("root.serverError", {
         type: (error as any).code,
         message: (error as any).message,
       });
-      console.log("Error logging in:", (error as any).message);
+      console.error("Error signing up:", (error as any).message);
     }
   }
 
-  async function handleGoogleSignIn() {
+  async function handleGoogleSignUp() {
     try {
       await signInWithPopup(auth, googleProvider);
     } catch (error) {
@@ -73,7 +107,7 @@ export default function LoginPage(): JSX.Element {
         type: (error as any).code,
         message: (error as any).message,
       });
-      console.log("Error logging in:", (error as any).message);
+      console.error("Error signing up:", (error as any).message);
     }
   }
 
@@ -81,13 +115,13 @@ export default function LoginPage(): JSX.Element {
     <div className="flex justify-center h-full sm:p-12">
       <Card className="sm:max-w-96 w-full text-center">
         <CardHeader>
-          <CardTitle>Welcome Back</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+          <CardTitle>Create an Account</CardTitle>
+          <CardDescription>Join us by signing up</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex flex-col items-center justify-center gap-4">
             <Button
-              onClick={handleGoogleSignIn}
+              onClick={handleGoogleSignUp}
               variant={"outline"}
               className="w-full text-md font-normal"
             >
@@ -97,7 +131,7 @@ export default function LoginPage(): JSX.Element {
                 loading="lazy"
                 alt="google logo"
               />
-              Sign in with Google
+              Sign up with Google
             </Button>
           </div>
           <div className="flex items-center justify-center gap-4 mt-4">
@@ -112,18 +146,50 @@ export default function LoginPage(): JSX.Element {
             >
               <FormField
                 control={form.control}
+                rules={{ required: "First Name is required" }}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        id="firstName"
+                        autoComplete="given-name"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        type="text"
+                        id="lastName"
+                        autoComplete="family-name"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 rules={{ required: "Email is required" }}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        type="text"
-                        id="email"
-                        autoComplete="email"
-                      />
+                      <Input {...field} type="email" autoComplete="email" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -140,38 +206,33 @@ export default function LoginPage(): JSX.Element {
                       <Input
                         {...field}
                         type="password"
-                        id="password"
-                        autoComplete="current-password"
+                        autoComplete="new-password"
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <div>
-                <Link
-                  to="/auth/forgot-password"
-                  className="text-sm p-0 text-muted-foreground hover:underline "
-                >
-                  Forgot your password?
-                </Link>
-              </div>
-
               <div className="pt-2">
                 <Button
                   type="submit"
                   disabled={form.formState.isSubmitting}
                   className="w-full"
                 >
-                  Sign In
+                  Sign Up
                 </Button>
               </div>
-
               {form.formState.errors.root?.serverError && (
-                <ErrorText text={"Error logging in. Please contact support."} />
+                <ErrorText text={"Error signing up. Please try again."} />
               )}
             </form>
           </Form>
+          <p className="text-sm text-muted-foreground mt-4">
+            Already have an account?{" "}
+            <Link to="/auth/login" className="underline">
+              Log in here
+            </Link>
+          </p>
         </CardContent>
       </Card>
     </div>

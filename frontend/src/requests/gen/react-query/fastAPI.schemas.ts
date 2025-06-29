@@ -13,10 +13,10 @@ export interface ValidationError {
 }
 
 export interface UserRead {
+  user_id: string;
   user_first: string;
   user_last: string;
   email: string;
-  user_id: string;
   is_admin: boolean;
   is_active: boolean;
   created_at: string;
@@ -26,6 +26,7 @@ export interface UserRead {
 }
 
 export interface UserCreate {
+  user_id: string;
   user_first: string;
   user_last: string;
   email: string;
@@ -51,6 +52,38 @@ export interface HTTPValidationError {
   detail?: ValidationError[];
 }
 
+/**
+ * Schema for updating an existing collection item.
+ */
+export interface CollectionUpdate {
+  user_id: string;
+  card_id: number;
+  qty: number;
+  is_foil?: boolean;
+  /** @maxLength 2 */
+  condition?: string;
+  updated_by_id?: string;
+}
+
+/**
+ * Schema for reading a collection item with minimal details.
+ */
+export interface CollectionSimpleRead {
+  user_id: string;
+  card_id: number;
+  qty: number;
+  is_foil?: boolean;
+  /** @maxLength 2 */
+  condition?: string;
+  created_at: string;
+  updated_at: string;
+  created_by_id: string;
+  updated_by_id: string;
+}
+
+/**
+ * Schema for reading a collection item with detailed card information.
+ */
 export interface CollectionRead {
   user_id: string;
   card_id: number;
@@ -65,6 +98,9 @@ export interface CollectionRead {
   catalog: CatalogCardComplexRead;
 }
 
+/**
+ * Schema for creating a new collection item.
+ */
 export interface CollectionCreate {
   user_id: string;
   card_id: number;
@@ -76,6 +112,9 @@ export interface CollectionCreate {
   updated_by_id?: string;
 }
 
+/**
+ * Schema for counting collection items.
+ */
 export interface CollectionCounts {
   user_id: string;
   card_id: number;

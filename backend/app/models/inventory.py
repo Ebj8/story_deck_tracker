@@ -4,14 +4,14 @@ SQLAlchemy models for the whole inventory system
 Inventory is now referred to as collection throughout the app
 """
 
-from .base import Base
 from typing import Optional, List
 from sqlalchemy import ForeignKey
-from app.models.base import relationship
 from sqlalchemy.orm import (
     Mapped,
     mapped_column,
 )
+from app.models.base import relationship
+from .base import Base
 
 
 class User(Base):

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useUser } from "@/auth/userContext";
+import { useUser } from "@/auth/UserContext";
 
 const Navbar = () => {
   const { user, dbUser, signOutUser } = useUser();
@@ -35,7 +35,7 @@ const Navbar = () => {
             </Button>
           ) : (
             <Button className="primary">
-              <a href="/login">Sign In</a>
+              <a href="auth/login">Sign In</a>
             </Button>
           )}
         </div>

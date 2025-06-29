@@ -25,6 +25,8 @@ import type {
   CollectionCounts,
   CollectionCreate,
   CollectionRead,
+  CollectionSimpleRead,
+  CollectionUpdate,
   HTTPValidationError
 } from './fastAPI.schemas'
 import { customInstance } from '../../Axios';
@@ -38,14 +40,14 @@ import type { ErrorType } from '../../Axios';
  * @summary Update Collection Row
  */
 export const updateCollectionRow = (
-    collectionCreate: CollectionCreate,
+    collectionUpdate: CollectionUpdate,
  ) => {
       
       
-      return customInstance<CollectionRead>(
+      return customInstance<CollectionSimpleRead>(
       {url: `/api/collection/`, method: 'PUT',
       headers: {'Content-Type': 'application/json', },
-      data: collectionCreate
+      data: collectionUpdate
     },
       );
     }
@@ -53,7 +55,7 @@ export const updateCollectionRow = (
 
 
 export const getUpdateCollectionRowMutationOptions = <TData = Awaited<ReturnType<typeof updateCollectionRow>>, TError = ErrorType<void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionUpdate}, TContext>, }
 ) => {
 const mutationKey = ['updateCollectionRow'];
 const {mutation: mutationOptions} = options ?
@@ -65,7 +67,7 @@ const {mutation: mutationOptions} = options ?
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCollectionRow>>, {data: CollectionCreate}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateCollectionRow>>, {data: CollectionUpdate}> = (props) => {
           const {data} = props ?? {};
 
           return  updateCollectionRow(data,)
@@ -74,21 +76,21 @@ const {mutation: mutationOptions} = options ?
         
 
 
-  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>}
+  return  { mutationFn, ...mutationOptions } as UseMutationOptions<TData, TError,{data: CollectionUpdate}, TContext>}
 
     export type UpdateCollectionRowMutationResult = NonNullable<Awaited<ReturnType<typeof updateCollectionRow>>>
-    export type UpdateCollectionRowMutationBody = CollectionCreate
+    export type UpdateCollectionRowMutationBody = CollectionUpdate
     export type UpdateCollectionRowMutationError = ErrorType<void | HTTPValidationError>
 
     /**
  * @summary Update Collection Row
  */
 export const useUpdateCollectionRow = <TData = Awaited<ReturnType<typeof updateCollectionRow>>, TError = ErrorType<void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionCreate}, TContext>, }
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<TData, TError,{data: CollectionUpdate}, TContext>, }
 ): UseMutationResult<
         TData,
         TError,
-        {data: CollectionCreate},
+        {data: CollectionUpdate},
         TContext
       > => {
 
@@ -106,7 +108,7 @@ export const createCollectionRow = (
 ) => {
       
       
-      return customInstance<CollectionRead>(
+      return customInstance<CollectionSimpleRead>(
       {url: `/api/collection/`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
       data: collectionCreate, signal

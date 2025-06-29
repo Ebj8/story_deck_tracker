@@ -7,6 +7,7 @@ from datetime import datetime
 
 
 class UserBase(BaseModel):
+    user_id: str
     user_first: str
     user_last: str
     email: str
@@ -17,7 +18,6 @@ class UserCreate(UserBase):
 
 
 class UserRead(UserBase):
-    user_id: str
     is_admin: bool
     is_active: bool
     created_at: datetime

@@ -1,6 +1,6 @@
 import CollectionPage from "@/pages/collection/page";
 import AboutPage from "@/pages/about/page";
-import LoginPage from "@/pages/auth/page";
+import LoginPage from "@/pages/auth/login/page";
 import SetPage from "@/pages/admin/set/page";
 import CreateCatalogPage from "@/pages/admin/catalog/create/page";
 import { Routes, Route } from "react-router";
@@ -9,6 +9,8 @@ import AdminRoutes from "@/auth/AdminRoutes";
 import { useUser } from "@/auth/UserContext";
 import { useState, useEffect } from "react";
 import "./index.css";
+import SignupPage from "./pages/auth/signup/page";
+import VerifyEmailPage from "./pages/auth/verify-email/page";
 
 function App() {
   const { dbUser } = useUser();
@@ -26,7 +28,9 @@ function App() {
         <Route path="/" element={<CollectionPage />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="auth/login" element={<LoginPage />} />
+        <Route path="auth/signup" element={<SignupPage />} />
+        <Route path="/auth/verify-email" element={<VerifyEmailPage />} />
         {userReady && dbUser?.is_admin && (
           <Route path="admin" element={<AdminRoutes />}>
             <Route path="sets" element={<SetPage />} />
