@@ -21,4 +21,11 @@ RUN uv sync --locked --no-dev
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Run alembic migrations
+RUN uv run alembic upgrade head
+
+ENTRYPOINT []
+
+# Start the application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT:-8080}"]
+
