@@ -12,4 +12,4 @@ fi
 
 # Run the app
 # Note: We don't want extra workers here because we are running multiple containers
-fastapi run main.py --host 0.0.0.0 --port 8080
+uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}
