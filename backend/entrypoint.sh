@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Print the current working directory
-echo "Current working directory: $(pwd)"
-
 # Run Alembic migrations
 alembic upgrade head
 if [ $? -ne 0 ]; then
