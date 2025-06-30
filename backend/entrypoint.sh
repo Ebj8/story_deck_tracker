@@ -1,6 +1,8 @@
 #!/bin/sh
 . /code/.venv/bin/activate
-which alembic
+
+echo "Alembic location: $(which alembic)"
+echo "Uvicorn location: $(which uvicorn)"
 
 # Run Alembic migrations
 alembic upgrade head
