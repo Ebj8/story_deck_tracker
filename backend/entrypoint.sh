@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# No need to "activate" the environment; just rely on PATH
-echo "Alembic location: $(which alembic)"
+# Print the current working directory
+echo "Current working directory: $(pwd)"
 
 # Run Alembic migrations
 alembic upgrade head
@@ -12,4 +12,4 @@ fi
 
 
 # Start the FastAPI app
-uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}
+uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}

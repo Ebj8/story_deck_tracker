@@ -21,6 +21,9 @@ RUN uv sync --locked --no-dev
 
 ENV PATH="/backend/.venv/bin:$PATH"
 
+# Change to the directory where the app is
+WORKDIR /backend/app
+
 # Make entrypoint script executable
 RUN chmod +x /backend/entrypoint.sh
 
