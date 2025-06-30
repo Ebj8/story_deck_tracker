@@ -7,7 +7,7 @@ import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 
 const getBaseUrl = () => {
   switch (import.meta.env.VITE_ENV) {
-    case "production":
+    case "prod":
       return "https://story-deck-api-691053305129.us-west3.run.app";
     default:
       return "http://localhost:8000";

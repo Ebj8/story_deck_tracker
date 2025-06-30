@@ -43,12 +43,8 @@ ORIGINS = {
     EnvironmentEnum.DEV: [
         "http://localhost:5173",
     ],
-    EnvironmentEnum.STAGING: [
-        "https://staging.legrandehealth.app",
-        "https://staging.legrandehealth.app/",
-    ],
     EnvironmentEnum.PROD: [
-        "https://legrandehealth.app",
+        "https://sd-tracker-449515.web.app",
     ],
 }
 
