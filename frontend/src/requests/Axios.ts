@@ -8,11 +8,7 @@ import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 const getBaseUrl = () => {
   switch (import.meta.env.VITE_ENV) {
     case "production":
-      return "https://nomp-prod-150239024349.us-west1.run.app";
-    case "staging":
-      return "https://nomp-staging-856431008964.us-west1.run.app";
-    case "demo":
-      return "https://nomp-619048117804.us-central1.run.app";
+      return "https://story-deck-api-691053305129.us-west3.run.app";
     default:
       return "http://localhost:8000";
   }
