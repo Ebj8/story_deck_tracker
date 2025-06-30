@@ -1,72 +1,38 @@
-# Inspired by 
-# - https://github.com/Swiple/swiple/blob/main/backend/Dockerfile
-# - https://github.com/fastapi/full-stack-fastapi-template/blob/master/backend/Dockerfile
-###############################################
-# Base Image
-###############################################
-FROM python:3.12-slim AS python-base
+# Base image
+FROM python:3.12-slim
 
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on \
-    PIP_DEFAULT_TIMEOUT=100 \
-    PYSETUP_PATH="/code" \
-    VENV_PATH="/code/.venv"
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    build-essential \
+    libpq-dev \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-###############################################
-# Builder Image
-###############################################
-FROM python-base AS builder-base
+# Install uv (from Astral)
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 
-WORKDIR $PYSETUP_PATH
+# Add uv to PATH
+ENV PATH="/root/.cargo/bin:$PATH"
 
-# Install uv
-COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
+# Set work directory
+WORKDIR /app
 
-# Compile bytecode
-# Ref: https://docs.astral.sh/uv/guides/integration/docker/#compiling-bytecode
-ENV UV_COMPILE_BYTECODE=1
+# Copy dependency files first for better caching
+COPY pyproject.toml poetry.lock* ./
 
-# uv Cache
-# Ref: https://docs.astral.sh/uv/guides/integration/docker/#caching
-ENV UV_LINK_MODE=copy
+# Install Python dependencies using uv
+RUN uv pip install .
 
-# Install dependencies
-COPY pyproject.toml uv.lock ./
-RUN uv sync --frozen --no-install-project
+# Copy the rest of the app code
+COPY . .
 
+# Make entrypoint executable
+RUN chmod +x ./entrypoint.sh
 
-###############################################
-# Production Image
-###############################################
-FROM python-base AS production
+# Environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# https://doc.courtbouillon.org/weasyprint/stable/first_steps.html#debian-11
-RUN apt-get update \
-    && apt-get install --no-install-recommends -y \
-    libpango-1.0-0 libpangoft2-1.0-0 libharfbuzz-subset0 libjpeg-dev libopenjp2-7-dev libffi-dev && \
-    apt clean && \
-    rm -rf /var/cache/apt/*
-
-
-# Place executables in the environment at the front of the path
-# Ref: https://docs.astral.sh/uv/guides/integration/docker/#using-the-environment
-ENV PATH="$VENV_PATH/bin:$PATH"
-
-COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
-
-# Copy the app
-COPY app $PYSETUP_PATH/app
-
-# Change to the directory where the app is
-WORKDIR $PYSETUP_PATH/app
-
-# Copy entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-
-# Make entrypoint script executable
-RUN chmod +x /entrypoint.sh
-
-# Use the entrypoint script
-ENTRYPOINT ["/entrypoint.sh"]
+# Run your script
+ENTRYPOINT ["./entrypoint.sh"]
