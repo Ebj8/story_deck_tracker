@@ -1,4 +1,6 @@
 #!/bin/sh
+. /code/.venv/bin/activate
+which alembic
 
 # Run Alembic migrations
 alembic upgrade head
