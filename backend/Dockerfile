@@ -13,19 +13,17 @@ RUN apt-get update && apt-get install -y \
 COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
 # Copy the project into the image
-ADD . /app
+COPY . /backend
 
 # Sync the project into a new environment, asserting the lockfile is up to date
-WORKDIR /app
+WORKDIR /backend
 RUN uv sync --locked --no-dev
 
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/backend/.venv/bin:$PATH"
 
-# Run alembic migrations
-RUN uv run alembic upgrade head
+# Make entrypoint script executable
+RUN chmod +x /backend/entrypoint.sh
 
-ENTRYPOINT []
+ENTRYPOINT ["/backend/entrypoint.sh"]
 
-# Start the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT:-8080}"]
 
