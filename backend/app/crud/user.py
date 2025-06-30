@@ -16,8 +16,8 @@ async def create_user(db: AsyncSession, user: UserCreate):
 
     db_user = models.User(
         **user.model_dump(),
-        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
-        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        created_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
+        updated_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
     )
 
     # Create patient in database
