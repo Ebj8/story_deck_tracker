@@ -10,29 +10,18 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv (from Astral)
-RUN curl -LsSf https://astral.sh/uv/install.sh | sh
+COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
 
-# Add uv to PATH
-ENV PATH="/root/.cargo/bin:$PATH"
+# Copy the project into the image
+ADD . /app
 
-# Set work directory
+# Sync the project into a new environment, asserting the lockfile is up to date
 WORKDIR /app
+RUN uv sync --locked --no-dev
 
-# Copy dependency files first for better caching
-COPY pyproject.toml poetry.lock* ./
+ENV PATH="/app/.venv/bin:$PATH"
 
-# Install Python dependencies using uv
-RUN uv pip install .
-
-# Copy the rest of the app code
-COPY . .
-
-# Make entrypoint executable
-RUN chmod +x ./entrypoint.sh
-
-# Environment variables
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+ENTRYPOINT []
 
 # Run your script
-ENTRYPOINT ["./entrypoint.sh"]
+CMD ["fastapi", "run", "--host", "0.0.0.0", "--port", "8080"]
