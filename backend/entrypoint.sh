@@ -9,4 +9,4 @@ fi
 
 
 # Start the FastAPI app
-uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}
+fastapi run main.py --host 0.0.0.0 --port 8080
