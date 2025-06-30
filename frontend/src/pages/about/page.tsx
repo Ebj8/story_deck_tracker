@@ -1,18 +1,11 @@
-import { useUser } from "@/auth/UserContext";
-import { useGetUser } from "@/requests/gen/react-query/user";
+// import { useUser } from "@/auth/UserContext";
+// import { useGetUser } from "@/requests/gen/react-query/user";
 
 const AboutPage = () => {
-  const { user } = useUser();
-  const { data } = useGetUser(user?.uid || "");
+  // const { user } = useUser();
+  // const { data } = useGetUser(user?.uid || "");
 
-  console.log(data);
-
-  return (
-    <h1>
-      {" "}
-      {data?.user_first} {data?.user_last}{" "}
-    </h1>
-  );
+  return <h1>Hello world!</h1>;
 };
 
 export default AboutPage;

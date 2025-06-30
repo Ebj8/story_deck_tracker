@@ -8,6 +8,7 @@ import {
 import { getAuth, onAuthStateChanged, signOut, User } from "firebase/auth";
 import { useGetUser } from "@/requests/gen/react-query/user";
 import { UserRead } from "@/requests/gen/react-query/fastAPI.schemas";
+import { useNavigate } from "react-router-dom";
 
 interface UserContextType {
   user: User | null;
@@ -26,6 +27,7 @@ const UserContext = createContext<UserContextType>({
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const auth = getAuth();
+  const navigate = useNavigate();
 
   // React Query hook to fetch user data
   const {
@@ -59,7 +61,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     try {
       await signOut(auth);
       setUser(null);
-      window.location.href = "/";
+      navigate("/auth/login");
     } catch (error) {
       console.error("Error signing out:", error);
     }

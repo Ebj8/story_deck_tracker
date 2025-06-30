@@ -1,7 +1,7 @@
 import { useUser } from "@/auth/userContext";
-import { Navigate } from "react-router";
+import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Outlet } from "react-router";
+import { Outlet } from "react-router-dom";
 
 const AdminRoutes = () => {
   const { dbUser } = useUser();

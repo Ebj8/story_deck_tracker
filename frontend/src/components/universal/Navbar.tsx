@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/auth/UserContext";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -16,14 +16,20 @@ const Navbar = () => {
 
         {/* Links */}
         <div className="space-x-4">
-          <a href="/" className="hover:text-gray-400">
+          <a
+            className="hover:text-gray-400"
+            onClick={() => navigate("/collection")}
+          >
             Collection
           </a>
-          <a href="/about" className="hover:text-gray-400">
+          <a className="hover:text-gray-400" onClick={() => navigate("/about")}>
             About
           </a>
           {dbUser?.is_admin && (
-            <a href="/admin" className="hover:text-gray-400">
+            <a
+              className="hover:text-gray-400"
+              onClick={() => navigate("/admin")}
+            >
               Admin
             </a>
           )}

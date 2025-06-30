@@ -3,7 +3,7 @@ import AboutPage from "@/pages/about/page";
 import LoginPage from "@/pages/auth/login/page";
 import SetPage from "@/pages/admin/set/page";
 import CreateCatalogPage from "@/pages/admin/catalog/create/page";
-import { Routes, Route } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import { Layout } from "@/pages/layout";
 import AdminRoutes from "@/auth/AdminRoutes";
 import { useUser } from "@/auth/UserContext";
