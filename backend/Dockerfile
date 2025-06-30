@@ -21,7 +21,4 @@ RUN uv sync --locked --no-dev
 
 ENV PATH="/app/.venv/bin:$PATH"
 
-ENTRYPOINT []
-
-# Run your script
-CMD ["fastapi", "run", "--host", "0.0.0.0", "--port", "8080"]
+ENTRYPOINT ["/entrypoint.sh"]
