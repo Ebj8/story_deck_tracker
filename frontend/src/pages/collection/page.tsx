@@ -141,7 +141,7 @@ export default function StoryDeckTracker() {
           }`}
         >
           {/* View Controls */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-row items-start sm:items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-4">
               <Badge variant="secondary" className="text-sm">
                 {filteredCards?.length} cards
@@ -155,7 +155,7 @@ export default function StoryDeckTracker() {
             {user && (
               <div className="flex items-center gap-2">
                 <Label htmlFor="table-view" className="text-sm">
-                  Switch to Table
+                  {isTableView ? "Grid" : "Table"}
                 </Label>
                 <Switch
                   id="table-view"
