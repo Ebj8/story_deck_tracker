@@ -26,7 +26,7 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
 
-if (import.meta.env.VITE_ENV === "development") {
+if (import.meta.env.VITE_ENV === "dev") {
   // local emulator
   connectAuthEmulator(auth, "http://localhost:9099");
   connectStorageEmulator(storage, "localhost", 9199);

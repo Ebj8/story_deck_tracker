@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="sm:h-[200px] h-[250px] bg-[#516675] flex flex-col justify-center items-start sm:flex-row sm:justify-around sm:items-center text-center gap-6">
+    <footer className="h-[100px] bg-[#516675] flex flex-col justify-center items-start sm:flex-row sm:justify-around sm:items-center text-center gap-6">
       <div className="flex flex-col sm:gap-4 gap-2">
         <p className="text-white text-xs">
           Story Deck and its logos are trademarks of Dragonsteel Books in the
