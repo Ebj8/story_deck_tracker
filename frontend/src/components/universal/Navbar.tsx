@@ -37,7 +37,7 @@ const Navbar = () => {
                 <NavigationMenuLink
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    "hover:text-gray-300 hover:bg-gray-700 bg-gray-800"
+                    "hover:text-gray-300 hover:bg-gray-700 bg-gray-800 cursor-pointer"
                   )}
                   onClick={() => navigate("/collection")}
                 >
@@ -49,7 +49,7 @@ const Navbar = () => {
                 <NavigationMenuLink
                   className={cn(
                     navigationMenuTriggerStyle(),
-                    "hover:text-gray-300 hover:bg-gray-700 bg-gray-800"
+                    "hover:text-gray-300 hover:bg-gray-700 bg-gray-800 cursor-pointer"
                   )}
                   onClick={() => navigate("/about")}
                 >

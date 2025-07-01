@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 // Everything up to hear are standard imports for forms
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
+
 import { useCreateSet } from "@/requests/gen/react-query/set";
 
 // 1. Define a schema
@@ -24,6 +27,7 @@ const formSchema = z.object({
 // 2. Define form component
 const CreateSetForm = () => {
   const mutation = useCreateSet();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,10 +45,18 @@ const CreateSetForm = () => {
       { data: values },
       {
         onSuccess: (response) => {
-          console.log("Set created successfully!", response);
+          toast({
+            title: "Set created successfully",
+            description: response.set_name + " was created!",
+          });
+          form.reset();
         },
         onError: (error) => {
-          console.error("Error creating set:", error);
+          toast({
+            variant: "destructive",
+            title: "Error creating set",
+            description: error.message,
+          });
         },
       }
     );
@@ -91,7 +103,12 @@ const CreateSetForm = () => {
             )}
           />
           <div className="flex justify-end">
-            <Button type="submit">Next</Button>
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Submit
+            </Button>
           </div>
         </form>
       </Form>
