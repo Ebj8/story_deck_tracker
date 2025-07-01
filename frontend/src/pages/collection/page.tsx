@@ -84,9 +84,10 @@ export default function StoryDeckTracker() {
     filteredCards?.some((filteredCard) => filteredCard.card_id === card.card_id)
   );
 
+  // Fix: Use max-w-screen-2xl and mx-auto to constrain width and center content
   return (
-    <div className="min-h-screen w-screen bg-gray-50">
-      <div className="flex min-h-screen">
+    <div className="min-h-screen bg-gray-50">
+      <div className="flex min-h-screen max-w-screen-2xl mx-auto w-full">
         {/* Desktop Filters Sidebar */}
         <div
           className={`hidden min-h-full md:block bg-white border-r border-gray-200 transition-all duration-300 ${
