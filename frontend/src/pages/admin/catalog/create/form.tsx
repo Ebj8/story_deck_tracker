@@ -26,6 +26,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "@/auth/firebase";
+import { useToast } from "@/hooks/use-toast";
+import { Loader2 } from "lucide-react";
 
 // 1. Define a schema
 const formSchema = z.object({
@@ -42,6 +44,7 @@ const CreateCatalogForm = () => {
   const { data: sets } = useGetSets();
   const [frontImg, setFrontImg] = useState<File | null>(null);
   const [backImg, setBackImg] = useState<File | null>(null);
+  const { toast } = useToast();
   // const [frontProgress, setFrontProgress] = useState(0);
   // const [frontDownloadURL, setFrontDownloadURL] = useState<String | null>(null);
 
@@ -121,9 +124,19 @@ const CreateCatalogForm = () => {
       {
         onSuccess: (response) => {
           console.log("Card added to catalog successfully!", response);
+          toast({
+            title: "Card added to catalog successfully",
+            description:
+              response.collector_number + " was added to the catalog!",
+          });
+          form.reset();
         },
         onError: (error) => {
           console.error("Error creating catalog entry:", error);
+          toast({
+            title: "Error adding card to catalog",
+            description: error.message,
+          });
         },
       }
     );
@@ -168,7 +181,7 @@ const CreateCatalogForm = () => {
             )}
           />
           <div className="flex flex-row ">
-            <div className="w-[80%]">
+            <div className="w-[70%]">
               <FormField
                 control={form.control}
                 name="collector_number"
@@ -188,7 +201,7 @@ const CreateCatalogForm = () => {
                 )}
               />
             </div>
-            <div className="w-[20%] justify-items-center items-center">
+            <div className="w-[30%] justify-items-center items-center">
               <br />
               <FormField
                 control={form.control}
@@ -236,7 +249,12 @@ const CreateCatalogForm = () => {
             </FormItem>
           </div>
           <div className="flex justify-end">
-            <Button type="submit">Next</Button>
+            <Button type="submit" disabled={mutation.isPending}>
+              {mutation.isPending && (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              )}
+              Submit
+            </Button>
           </div>
         </form>
       </Form>
