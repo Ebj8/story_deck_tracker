@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Filter, Table, Grid3X3, ChevronLeft } from "lucide-react";
 import FilterContent from "@/pages/collection/FilterContent";
+import MobileFilterSheet from "@/pages/collection/MobileFilterSheet";
 
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
@@ -26,11 +27,13 @@ export default function StoryDeckTracker() {
   const [isTableView, setIsTableView] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(true);
 
-  // Filter states
-  const [selectedYear, setSelectedYear] = useState("All Years");
-  const [selectedSet, setSelectedSet] = useState("All Sets");
-  const [showVariants, setShowVariants] = useState("all"); // all, none, pure_nonsense
-  const [collectionFilter, setCollectionFilter] = useState("all"); // all, collected, uncollected
+  // Unified filter state
+  const [filterValues, setFilterValues] = useState({
+    year: "All Years",
+    set: "All Sets",
+    collection: "all",
+    variants: "all",
+  });
 
   // Make an array out of the unique card_id from the collection
   const collectionCardIds = Array.from(
@@ -46,30 +49,34 @@ export default function StoryDeckTracker() {
   const filteredCards = data?.filter((card) => {
     // Year filter
     if (
-      selectedYear !== "All Years" &&
-      card.set.release_year !== Number(selectedYear)
+      filterValues.year !== "All Years" &&
+      card.set.release_year !== Number(filterValues.year)
     )
       return false;
     // Set filter
-    if (selectedSet !== "All Sets" && card.set.set_name !== selectedSet)
+    if (
+      filterValues.set !== "All Sets" &&
+      card.set.set_name !== filterValues.set
+    )
       return false;
 
     // Collection filter
     if (
-      collectionFilter === "collected" &&
+      filterValues.collection === "collected" &&
       !collectionCardIds.includes(card.card_id)
     )
       return false;
 
     if (
-      collectionFilter === "uncollected" &&
+      filterValues.collection === "uncollected" &&
       collectionCardIds.includes(card.card_id)
     )
       return false;
 
     // Variant filter
-    if (showVariants === "none" && card.is_variant) return false;
-    if (showVariants === "pure_nonsense" && !card.is_variant) return false;
+    if (filterValues.variants === "none" && card.is_variant) return false;
+    if (filterValues.variants === "pure_nonsense" && !card.is_variant)
+      return false;
 
     return true;
   });
@@ -87,7 +94,7 @@ export default function StoryDeckTracker() {
   // Fix: Use max-w-screen-2xl and mx-auto to constrain width and center content
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="flex min-h-screen max-w-screen-2xl mx-auto w-full">
+      <div className="flex min-h-screen mx-auto w-full">
         {/* Desktop Filters Sidebar */}
         <div
           className={`hidden min-h-full md:block bg-white border-r border-gray-200 transition-all duration-300 ${
@@ -120,76 +127,83 @@ export default function StoryDeckTracker() {
 
             {filtersOpen && (
               <FilterContent
-                selectedYear={selectedYear}
-                setSelectedYear={setSelectedYear}
-                selectedSet={selectedSet}
-                setSelectedSet={setSelectedSet}
-                collectionFilter={collectionFilter}
-                setCollectionFilter={setCollectionFilter}
-                showVariants={showVariants}
-                setShowVariants={setShowVariants}
-                releaseYears={releaseYears}
-                sets={sets}
+                filterValues={filterValues}
+                setFilterValues={setFilterValues}
+                variant="desktop"
+                data={{
+                  releaseYears,
+                  sets,
+                  user,
+                }}
               />
             )}
           </div>
         </div>
 
-        {/* Main Content */}
+        {/* Main Content Wrapper for consistent width */}
         <div
-          className={`flex-1 p-4 sm:p-6 sm:pr-[10%] transition-all duration-300 ${
-            !filtersOpen ? "sm:pl-[10%]" : ""
+          className={`flex-1 p-4 sm:p-6 xl:pr-[20%] transition-all duration-300 ${
+            !filtersOpen ? "xl:pl-[calc(20%-24px)]" : ""
           }`}
         >
-          {/* View Controls */}
-          <div className="flex flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div className="flex items-center gap-4">
-              <Badge variant="secondary" className="text-sm">
-                {filteredCards?.length} cards
-              </Badge>
-              {user && (
-                <Badge variant="outline" className="text-sm">
-                  {collectedCount} collected
-                </Badge>
-              )}
-            </div>
-            {user && (
-              <div className="flex items-center gap-2">
-                <Label htmlFor="table-view" className="text-sm">
-                  {isTableView ? "Grid" : "Table"}
-                </Label>
-                <Switch
-                  id="table-view"
-                  checked={isTableView}
-                  onCheckedChange={setIsTableView}
+          <div className="max-w-screen-2xl mx-auto w-full">
+            {/* View Controls */}
+            <div className="flex flex-row items-start sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-4">
+                {/* Mobile Filter Button */}
+                <MobileFilterSheet
+                  filterValues={filterValues}
+                  setFilterValues={setFilterValues}
+                  releaseYears={releaseYears}
+                  sets={sets}
                 />
-                {isTableView ? (
-                  <Table className="w-4 h-4" />
-                ) : (
-                  <Grid3X3 className="w-4 h-4" />
+                <Badge variant="secondary" className="text-sm">
+                  {filteredCards?.length} cards
+                </Badge>
+                {user && (
+                  <Badge variant="outline" className="text-sm">
+                    {collectedCount} collected
+                  </Badge>
                 )}
               </div>
+              {user && (
+                <div className="flex items-center gap-2">
+                  <Label htmlFor="table-view" className="text-sm">
+                    {isTableView ? "Grid" : "Table"}
+                  </Label>
+                  <Switch
+                    id="table-view"
+                    checked={isTableView}
+                    onCheckedChange={setIsTableView}
+                  />
+                  {isTableView ? (
+                    <Table className="w-4 h-4" />
+                  ) : (
+                    <Grid3X3 className="w-4 h-4" />
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Cards Grid - Responsive */}
+            {!isTableView ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
+                {filteredCards?.map((card, index) => (
+                  <CardBox
+                    key={index}
+                    card={card}
+                    collection={collection}
+                    refetchCollection={refetchCollection}
+                  />
+                ))}
+              </div>
+            ) : (
+              <CollectionTable
+                data={filteredCollection}
+                isLoading={collectionIsLoading}
+              />
             )}
           </div>
-
-          {/* Cards Grid - Responsive */}
-          {!isTableView ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start justify-items-center gap-4">
-              {filteredCards?.map((card, index) => (
-                <CardBox
-                  key={index}
-                  card={card}
-                  collection={collection}
-                  refetchCollection={refetchCollection}
-                />
-              ))}
-            </div>
-          ) : (
-            <CollectionTable
-              data={filteredCollection}
-              isLoading={collectionIsLoading}
-            />
-          )}
         </div>
       </div>
     </div>
