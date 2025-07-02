@@ -39,6 +39,7 @@ export default function StoryDeckTracker() {
     set: "All Sets",
     collection: "all",
     variants: "all",
+    foil: "all",
   });
 
   // Make an array out of the unique card_id from the collection
@@ -208,24 +209,26 @@ export default function StoryDeckTracker() {
             {/* Cards Grid - Responsive */}
             {!isTableView ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
-                {filteredCards?.map((card, index) => (
-                  <CardBox
-                    key={index}
-                    card={card}
-                    isFoil={false}
-                    collection={collection}
-                    refetchCollection={refetchCollection}
-                  />
-                ))}
-                {filteredCards?.map((card, index) => (
-                  <CardBox
-                    key={index}
-                    card={card}
-                    isFoil={true}
-                    collection={collection}
-                    refetchCollection={refetchCollection}
-                  />
-                ))}
+                {filterValues.foil !== "foil" &&
+                  filteredCards?.map((card, index) => (
+                    <CardBox
+                      key={index}
+                      card={card}
+                      isFoil={false}
+                      collection={collection}
+                      refetchCollection={refetchCollection}
+                    />
+                  ))}
+                {filterValues.foil !== "non-foil" &&
+                  filteredCards?.map((card, index) => (
+                    <CardBox
+                      key={index}
+                      card={card}
+                      isFoil={true}
+                      collection={collection}
+                      refetchCollection={refetchCollection}
+                    />
+                  ))}
               </div>
             ) : (
               <CollectionTable

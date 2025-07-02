@@ -19,6 +19,7 @@ interface FilterContentProps {
     set: string;
     collection: string;
     variants: string;
+    foil: string;
   };
   setFilterValues: (values: any) => void;
   releaseYears: number[];
@@ -138,6 +139,33 @@ export default function FilterContent({
                   : option === "none"
                   ? "No Variants"
                   : "Pure Nonsense"}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+      <Separator />
+
+      {/* Foil Filter */}
+      <div className="space-y-3">
+        <Label className="text-sm font-medium">Foil</Label>
+        <RadioGroup>
+          {["all", "foil", "non-foil"].map((option) => (
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem
+                value={option}
+                id={option}
+                checked={filterValues.foil === option}
+                onClick={() =>
+                  setFilterValues({ ...filterValues, foil: option })
+                }
+              />
+              <Label htmlFor={option} className="text-sm capitalize">
+                {option === "all"
+                  ? "All Cards"
+                  : option === "foil"
+                  ? "Foil Only"
+                  : "Non-Foil Only"}
               </Label>
             </div>
           ))}
