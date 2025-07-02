@@ -151,7 +151,7 @@ export default function StoryDeckTracker() {
         >
           <div className="max-w-screen-2xl mx-auto w-full">
             {/* View Controls */}
-            <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-12 bg-gray-50 z-10 py-4">
+            <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-12 bg-gray-50 z-20 py-4">
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex gap-4">
                   <Sheet>

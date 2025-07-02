@@ -9,6 +9,7 @@ import {
   useCreateCollectionRow,
   useUpdateCollectionRow,
 } from "@/requests/gen/react-query/collection";
+import { Minus } from "lucide-react";
 
 interface CardBoxProps {
   card: CatalogCardRead;
@@ -132,7 +133,7 @@ const CardBox = ({
     card.img_front_url ||
     "https://firebasestorage.googleapis.com/v0/b/sd-tracker-449515.firebasestorage.app/o/card_images%2Fplaceholder_image.jpeg?alt=media&token=0de3b6fe-c7eb-4ab4-9a7c-49d1aadb95a5";
 
-  const colored = regQty > 0 || foilQty > 0 || !user;
+  const colored = isFoil ? foilQty > 0 || !user : regQty > 0 || !user;
 
   return (
     <div className="mt-4">
@@ -147,7 +148,7 @@ const CardBox = ({
             initial={{ opacity: 0, scale: 0 }}
             style={{ filter: colored ? "none" : "grayscale(100%)" }}
             animate={{ opacity: 1, scale: 1 }}
-            onClick={handleRegIncrease}
+            onClick={isFoil ? handleFoilIncrease : handleRegIncrease}
             transition={{
               duration: 0.4,
               scale: { type: "spring", bounce: 0.5 },
@@ -159,6 +160,22 @@ const CardBox = ({
             {isFoil ? foilQty : regQty}
           </div>
 
+          {/* Decrease button */}
+          <button
+            onClick={isFoil ? handleFoilDecrease : handleRegDecrease}
+            className="absolute top-0 left-0 w-16 h-16 bg-red-500 hover:bg-red-600 z-10 transition-colors duration-200 cursor-pointer"
+            disabled={(isFoil ? foilQty : regQty) === 0}
+            style={{
+              clipPath: "polygon(0 0, 0 100%, 100% 0)",
+              backgroundColor:
+                (isFoil ? foilQty : regQty) === 0 ? "#6b7280" : undefined,
+            }}
+          >
+            <span className="absolute top-2 left-2 text-white text-sm">
+              <Minus className="w-6 h-6" />
+            </span>
+          </button>
+
           {isFoil && (
             <>
               {/* ✨ Shine Bar - CONFINED */}
@@ -167,28 +184,15 @@ const CardBox = ({
               </div>
 
               {/* 🌈 Enhanced Rainbow Overlay */}
-              <div className="absolute inset-0 pointer-events-none rounded-lg mix-blend-screen opacity-50 bg-[linear-gradient(-45deg,#ff00cc,#3333ff,#00ffcc,#ffcc00,#ff00cc)] bg-[400%_400%] animate-foil-rainbow" />
+              <div
+                className={`absolute inset-0 pointer-events-none rounded-lg mix-blend-screen ${
+                  colored ? "opacity-50" : "opacity-30"
+                } bg-[linear-gradient(-45deg,#ff00cc,#3333ff,#00ffcc,#ffcc00,#ff00cc)] bg-[400%_400%] animate-foil-rainbow`}
+              />
             </>
           )}
         </div>
       </AnimatePresence>
-
-      {user && (
-        <div className="grid grid-cols-2 gap-8 items-center justify-center">
-          <Counter
-            label="Regular"
-            count={regQty}
-            onIncrement={handleRegIncrease}
-            onDecrement={handleRegDecrease}
-          />
-          <Counter
-            label="Foil"
-            count={foilQty}
-            onIncrement={handleFoilIncrease}
-            onDecrement={handleFoilDecrease}
-          />
-        </div>
-      )}
     </div>
   );
 };
