@@ -135,13 +135,13 @@ const CardBox = ({
   const colored = isFoil ? foilQty > 0 || !user : regQty > 0 || !user;
 
   return (
-    <div className="mt-4">
+    <div>
       <AnimatePresence mode="popLayout">
-        <div className="relative inline-block m-4 mx-auto w-[230px] h-[320px] rounded-lg overflow-hidden">
+        <div className="relative inline-block mt-2 mx-auto md:w-[230px] md:h-[320px] sm:w-[172.5px] sm:h-[240px] w-[115px] h-[160px] rounded-lg overflow-hidden">
           {/* Card image */}
           <motion.img
             key={regQty + foilQty}
-            className="w-full h-full object-cover rounded-lg"
+            className="w-full h-full object-cover rounded-lg hover:cursor-pointer"
             src={imageUrl}
             alt="Card Image"
             initial={{ opacity: 0, scale: 0 }}

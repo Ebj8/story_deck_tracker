@@ -140,7 +140,7 @@ export default function StoryDeckTracker() {
         >
           <div className="max-w-screen-2xl mx-auto w-full">
             {/* View Controls */}
-            <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-14 bg-gray-50 z-20 py-4">
+            <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-14 bg-gray-50 z-20 py-4 -mx-2">
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex gap-4">
                   <Sheet>
@@ -179,7 +179,7 @@ export default function StoryDeckTracker() {
             </div>
 
             {/* Cards Grid - Responsive */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
+            <div className="grid grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
               {filterValues.foil !== "foil" &&
                 filteredCards?.map((card, index) => (
                   <CardBox
