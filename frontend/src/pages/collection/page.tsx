@@ -13,7 +13,13 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Filter, Table, Grid3X3, ChevronLeft } from "lucide-react";
 import FilterContent from "@/pages/collection/FilterContent";
-import MobileFilterSheet from "@/pages/collection/MobileFilterSheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
@@ -129,12 +135,8 @@ export default function StoryDeckTracker() {
               <FilterContent
                 filterValues={filterValues}
                 setFilterValues={setFilterValues}
-                variant="desktop"
-                data={{
-                  releaseYears,
-                  sets,
-                  user,
-                }}
+                releaseYears={releaseYears}
+                sets={sets}
               />
             )}
           </div>
@@ -151,13 +153,29 @@ export default function StoryDeckTracker() {
             <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-12 bg-gray-50 z-10 py-4">
               <div className="flex flex-row items-center justify-between w-full">
                 <div className="flex gap-4">
-                  {/* Mobile Filter Button */}
-                  <MobileFilterSheet
-                    filterValues={filterValues}
-                    setFilterValues={setFilterValues}
-                    releaseYears={releaseYears}
-                    sets={sets}
-                  />
+                  <Sheet>
+                    <SheetTrigger>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="md:hidden"
+                      >
+                        <Filter className="h-4 w-4" />
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left">
+                      <SheetHeader>
+                        <SheetTitle>Filters</SheetTitle>
+                      </SheetHeader>
+                      <FilterContent
+                        filterValues={filterValues}
+                        setFilterValues={setFilterValues}
+                        releaseYears={releaseYears}
+                        sets={sets}
+                      />
+                    </SheetContent>
+                  </Sheet>
+
                   <Badge variant="secondary" className="text-sm">
                     {filteredCards?.length} cards
                   </Badge>
