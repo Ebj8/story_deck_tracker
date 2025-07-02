@@ -103,7 +103,7 @@ export default function StoryDeckTracker() {
       <div className="flex min-h-screen mx-auto w-full">
         {/* Desktop Filters Sidebar */}
         <div
-          className={`hidden min-h-full md:block bg-white border-r border-gray-200 transition-all duration-300 ${
+          className={`hidden min-h-full xl:block bg-white border-r border-gray-200 transition-all duration-300 ${
             filtersOpen ? "w-1/5" : "w-12 items-center justify-center"
           }`}
         >
@@ -158,7 +158,7 @@ export default function StoryDeckTracker() {
                       <Button
                         variant="outline"
                         size="icon"
-                        className="md:hidden"
+                        className="xl:hidden"
                       >
                         <Filter className="h-4 w-4" />
                       </Button>
@@ -207,7 +207,7 @@ export default function StoryDeckTracker() {
 
             {/* Cards Grid - Responsive */}
             {!isTableView ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
                 {filteredCards?.map((card, index) => (
                   <CardBox
                     key={index}
