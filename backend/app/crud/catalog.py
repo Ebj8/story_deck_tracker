@@ -18,8 +18,8 @@ async def create_catalog_card(db: AsyncSession, catalog_card: CatalogCardCreate)
     db_catalog_card = models.Catalog(
         **catalog_card.model_dump(),
         # TODO: Replace with actual user id
-        created_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
-        updated_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
+        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
     )
 
     # Create patient in database

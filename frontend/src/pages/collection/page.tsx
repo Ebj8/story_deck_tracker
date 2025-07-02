@@ -148,41 +148,43 @@ export default function StoryDeckTracker() {
         >
           <div className="max-w-screen-2xl mx-auto w-full">
             {/* View Controls */}
-            <div className="flex flex-row items-start sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-4">
-                {/* Mobile Filter Button */}
-                <MobileFilterSheet
-                  filterValues={filterValues}
-                  setFilterValues={setFilterValues}
-                  releaseYears={releaseYears}
-                  sets={sets}
-                />
-                <Badge variant="secondary" className="text-sm">
-                  {filteredCards?.length} cards
-                </Badge>
-                {user && (
-                  <Badge variant="outline" className="text-sm">
-                    {collectedCount} collected
-                  </Badge>
-                )}
-              </div>
-              {user && (
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="table-view" className="text-sm">
-                    {isTableView ? "Grid" : "Table"}
-                  </Label>
-                  <Switch
-                    id="table-view"
-                    checked={isTableView}
-                    onCheckedChange={setIsTableView}
+            <div className="flex flex-row items-center justify-center gap-4 mb-6 sticky sm:top-0 top-12 bg-gray-50 z-10 py-4">
+              <div className="flex flex-row items-center justify-between w-full">
+                <div className="flex gap-4">
+                  {/* Mobile Filter Button */}
+                  <MobileFilterSheet
+                    filterValues={filterValues}
+                    setFilterValues={setFilterValues}
+                    releaseYears={releaseYears}
+                    sets={sets}
                   />
-                  {isTableView ? (
-                    <Table className="w-4 h-4" />
-                  ) : (
-                    <Grid3X3 className="w-4 h-4" />
+                  <Badge variant="secondary" className="text-sm">
+                    {filteredCards?.length} cards
+                  </Badge>
+                  {user && (
+                    <Badge variant="outline" className="text-sm">
+                      {collectedCount} collected
+                    </Badge>
                   )}
                 </div>
-              )}
+                {user && (
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="table-view" className="text-sm">
+                      {isTableView ? "Grid" : "Table"}
+                    </Label>
+                    <Switch
+                      id="table-view"
+                      checked={isTableView}
+                      onCheckedChange={setIsTableView}
+                    />
+                    {isTableView ? (
+                      <Table className="w-4 h-4" />
+                    ) : (
+                      <Grid3X3 className="w-4 h-4" />
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Cards Grid - Responsive */}

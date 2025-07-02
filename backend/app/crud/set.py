@@ -17,8 +17,8 @@ async def create_set(db: AsyncSession, set: SetCreate):
     db_set = models.Set(
         **set.model_dump(),
         # TODO: Replace with actual user id
-        created_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
-        updated_by_id="BIaW6HRoJqORtgtGWtNTr9vtwKl2",
+        created_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
+        updated_by_id="P1gqYa5HGaAGNzX2MhN0gBADq6eC",
     )
 
     # Create patient in database

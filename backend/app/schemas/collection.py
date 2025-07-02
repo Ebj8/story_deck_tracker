@@ -25,8 +25,8 @@ class CollectionCreate(CollectionBase):
     Schema for creating a new collection item.
     """
 
-    created_by_id: str = "BIaW6HRoJqORtgtGWtNTr9vtwKl2"
-    updated_by_id: str = "BIaW6HRoJqORtgtGWtNTr9vtwKl2"
+    created_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
+    updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
 class CollectionUpdate(CollectionBase):
@@ -34,7 +34,7 @@ class CollectionUpdate(CollectionBase):
     Schema for updating an existing collection item.
     """
 
-    updated_by_id: str = "BIaW6HRoJqORtgtGWtNTr9vtwKl2"
+    updated_by_id: str = "P1gqYa5HGaAGNzX2MhN0gBADq6eC"
 
 
 class CollectionSimpleRead(CollectionBase):
