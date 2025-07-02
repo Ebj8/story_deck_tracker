@@ -8,9 +8,7 @@ import { useGetSets } from "@/requests/gen/react-query/set";
 import { useUser } from "@/auth/UserContext";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Filter, Table, Grid3X3, ChevronLeft } from "lucide-react";
+import { Filter, ChevronLeft } from "lucide-react";
 import FilterContent from "@/pages/collection/FilterContent";
 import {
   Sheet,
@@ -27,7 +25,6 @@ export default function StoryDeckTracker() {
     user?.uid || ""
   );
   const { data: sets } = useGetSets();
-  const [isTableView, setIsTableView] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(true);
 
   // Unified filter state
