@@ -147,7 +147,13 @@ const CardBox = ({
             initial={{ opacity: 0, scale: 0 }}
             style={{ filter: colored ? "none" : "grayscale(100%)" }}
             animate={{ opacity: 1, scale: 1 }}
-            onClick={isFoil ? handleFoilIncrease : handleRegIncrease}
+            onClick={
+              user
+                ? isFoil
+                  ? handleFoilIncrease
+                  : handleRegIncrease
+                : undefined
+            }
             transition={{
               duration: 0.4,
               scale: { type: "spring", bounce: 0.5 },
