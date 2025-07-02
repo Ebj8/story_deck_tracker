@@ -81,7 +81,7 @@ export default function LoginPage(): JSX.Element {
 
   return (
     <div className="flex justify-center h-full sm:p-12">
-      <Card className="sm:max-w-96 w-full text-center">
+      <Card className="sm:max-w-96 w-full text-center m-4">
         <CardHeader>
           <CardTitle>Welcome Back</CardTitle>
           <CardDescription>Sign in to your account</CardDescription>
