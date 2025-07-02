@@ -13,10 +13,16 @@ import {
 interface CardBoxProps {
   card: CatalogCardRead;
   collection: CollectionRead[] | undefined;
+  isFoil: boolean;
   refetchCollection: () => void;
 }
 
-const CardBox = ({ card, collection, refetchCollection }: CardBoxProps) => {
+const CardBox = ({
+  card,
+  collection,
+  isFoil,
+  refetchCollection,
+}: CardBoxProps) => {
   const { user } = useUser();
 
   // Filter collections for this card
@@ -131,20 +137,37 @@ const CardBox = ({ card, collection, refetchCollection }: CardBoxProps) => {
   return (
     <div className="mt-4">
       <AnimatePresence mode="popLayout">
-        <motion.img
-          key={regQty + foilQty}
-          className="rounded-lg m-4 mx-auto w-[230px] h-[320px]"
-          src={imageUrl}
-          alt="Card Image"
-          initial={{ opacity: 0, scale: 0 }}
-          style={{ filter: colored ? "none" : "grayscale(100%)" }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{
-            duration: 0.4,
-            scale: { type: "spring", bounce: 0.5 },
-          }}
-        />
+        <div className="relative inline-block m-4 mx-auto w-[230px] h-[320px] rounded-lg overflow-hidden">
+          {/* Card image */}
+          <motion.img
+            key={regQty + foilQty}
+            className="w-full h-full object-cover rounded-lg"
+            src={imageUrl}
+            alt="Card Image"
+            initial={{ opacity: 0, scale: 0 }}
+            style={{ filter: colored ? "none" : "grayscale(100%)" }}
+            animate={{ opacity: 1, scale: 1 }}
+            onClick={handleRegIncrease}
+            transition={{
+              duration: 0.4,
+              scale: { type: "spring", bounce: 0.5 },
+            }}
+          />
+
+          {isFoil && (
+            <>
+              {/* ✨ Shine Bar - CONFINED */}
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none rounded-lg">
+                <div className="absolute w-1/3 h-full bg-gradient-to-b from-transparent via-white/40 to-transparent opacity-90 rotate-[-20deg] animate-foil-shine-inside" />
+              </div>
+
+              {/* 🌈 Enhanced Rainbow Overlay */}
+              <div className="absolute inset-0 pointer-events-none rounded-lg mix-blend-screen opacity-50 bg-[linear-gradient(-45deg,#ff00cc,#3333ff,#00ffcc,#ffcc00,#ff00cc)] bg-[400%_400%] animate-foil-rainbow" />
+            </>
+          )}
+        </div>
       </AnimatePresence>
+
       {user && (
         <div className="grid grid-cols-2 gap-8 items-center justify-center">
           <Counter

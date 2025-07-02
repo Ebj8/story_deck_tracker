@@ -6,7 +6,22 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-  	extend: {
+		extend: {
+			keyframes: {
+				'foil-shine-inside': {
+					'0%': { transform: 'translateX(-150%) rotate(-20deg)' },
+					'100%': { transform: 'translateX(400%) rotate(-20deg)' },
+				},
+				'foil-rainbow': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' },
+					'100%': { backgroundPosition: '0% 50%' },
+				},
+			},
+			animation: {
+				'foil-shine-inside': 'foil-shine-inside 4s ease-in-out infinite',
+				'foil-rainbow': 'foil-rainbow 6s ease-in-out infinite',
+			},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',

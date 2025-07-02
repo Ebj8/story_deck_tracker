@@ -33,8 +33,6 @@ export default function FilterContent({
 }: FilterContentProps) {
   const { user } = useUser();
 
-  console.log(filterValues);
-
   return (
     <div className="space-y-6">
       {/* Year Filter */}

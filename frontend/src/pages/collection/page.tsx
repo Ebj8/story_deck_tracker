@@ -212,6 +212,16 @@ export default function StoryDeckTracker() {
                   <CardBox
                     key={index}
                     card={card}
+                    isFoil={false}
+                    collection={collection}
+                    refetchCollection={refetchCollection}
+                  />
+                ))}
+                {filteredCards?.map((card, index) => (
+                  <CardBox
+                    key={index}
+                    card={card}
+                    isFoil={true}
                     collection={collection}
                     refetchCollection={refetchCollection}
                   />
