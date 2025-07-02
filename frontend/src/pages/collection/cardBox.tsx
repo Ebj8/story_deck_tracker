@@ -1,4 +1,3 @@
-import Counter from "@/components/ui/Counter";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CatalogCardRead,

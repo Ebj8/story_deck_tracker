@@ -1,7 +1,6 @@
 "use client";
 
 import CardBox from "@/pages/collection/cardBox";
-import CollectionTable from "@/pages/collection/collectionTable";
 import { useState } from "react";
 import { useGetCatalogCards } from "@/requests/gen/react-query/catalog";
 import { useGetCollection } from "@/requests/gen/react-query/collection";
@@ -24,11 +23,9 @@ import {
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
   const { user } = useUser();
-  const {
-    data: collection,
-    refetch: refetchCollection,
-    isLoading: collectionIsLoading,
-  } = useGetCollection(user?.uid || "");
+  const { data: collection, refetch: refetchCollection } = useGetCollection(
+    user?.uid || ""
+  );
   const { data: sets } = useGetSets();
   const [isTableView, setIsTableView] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(true);
@@ -92,11 +89,6 @@ export default function StoryDeckTracker() {
   const collectedCount = filteredCards?.filter((card) =>
     collectionCardIds.includes(card.card_id)
   ).length;
-
-  // Filter the collection to only include cards that are in the filteredCards
-  const filteredCollection = collection?.filter((card) =>
-    filteredCards?.some((filteredCard) => filteredCard.card_id === card.card_id)
-  );
 
   // Fix: Use max-w-screen-2xl and mx-auto to constrain width and center content
   return (
@@ -186,56 +178,32 @@ export default function StoryDeckTracker() {
                     </Badge>
                   )}
                 </div>
-                {user && (
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor="table-view" className="text-sm">
-                      {isTableView ? "Grid" : "Table"}
-                    </Label>
-                    <Switch
-                      id="table-view"
-                      checked={isTableView}
-                      onCheckedChange={setIsTableView}
-                    />
-                    {isTableView ? (
-                      <Table className="w-4 h-4" />
-                    ) : (
-                      <Grid3X3 className="w-4 h-4" />
-                    )}
-                  </div>
-                )}
               </div>
             </div>
 
             {/* Cards Grid - Responsive */}
-            {!isTableView ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
-                {filterValues.foil !== "foil" &&
-                  filteredCards?.map((card, index) => (
-                    <CardBox
-                      key={index}
-                      card={card}
-                      isFoil={false}
-                      collection={collection}
-                      refetchCollection={refetchCollection}
-                    />
-                  ))}
-                {filterValues.foil !== "non-foil" &&
-                  filteredCards?.map((card, index) => (
-                    <CardBox
-                      key={index}
-                      card={card}
-                      isFoil={true}
-                      collection={collection}
-                      refetchCollection={refetchCollection}
-                    />
-                  ))}
-              </div>
-            ) : (
-              <CollectionTable
-                data={filteredCollection}
-                isLoading={collectionIsLoading}
-              />
-            )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
+              {filterValues.foil !== "foil" &&
+                filteredCards?.map((card, index) => (
+                  <CardBox
+                    key={index}
+                    card={card}
+                    isFoil={false}
+                    collection={collection}
+                    refetchCollection={refetchCollection}
+                  />
+                ))}
+              {filterValues.foil !== "non-foil" &&
+                filteredCards?.map((card, index) => (
+                  <CardBox
+                    key={index}
+                    card={card}
+                    isFoil={true}
+                    collection={collection}
+                    refetchCollection={refetchCollection}
+                  />
+                ))}
+            </div>
           </div>
         </div>
       </div>
