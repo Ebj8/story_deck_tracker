@@ -116,7 +116,7 @@ const MobileNavbar = () => {
                 {user ? (
                   <Button
                     variant="destructive"
-                    className="w-full hover:bg-red-700"
+                    className=" hover:bg-red-700 mx-2"
                     onClick={() => {
                       signOutUser();
                       setDropdownOpen(false);
@@ -127,7 +127,7 @@ const MobileNavbar = () => {
                 ) : (
                   <Button
                     variant="default"
-                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    className="mx-2"
                     onClick={() => {
                       navigate("/auth/login/");
                       setDropdownOpen(false);
