@@ -17,6 +17,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
 
 export default function StoryDeckTracker() {
   const { data } = useGetCatalogCards();
@@ -179,28 +180,62 @@ export default function StoryDeckTracker() {
             </div>
 
             {/* Cards Grid - Responsive */}
-            <div className="grid grid-cols-3 justify-items-center gap-4 w-full justify-self-center">
-              {filterValues.foil !== "foil" &&
-                filteredCards?.map((card, index) => (
-                  <CardBox
-                    key={index}
-                    card={card}
-                    isFoil={false}
-                    collection={collection}
-                    refetchCollection={refetchCollection}
-                  />
-                ))}
-              {filterValues.foil !== "non-foil" &&
-                filteredCards?.map((card, index) => (
-                  <CardBox
-                    key={index}
-                    card={card}
-                    isFoil={true}
-                    collection={collection}
-                    refetchCollection={refetchCollection}
-                  />
-                ))}
-            </div>
+            {(() => {
+              // Build the list of CardBoxes to display, depending on foil filter
+              let cardBoxes: React.ReactNode[] = [];
+              if (filterValues.foil !== "foil" && filteredCards) {
+                cardBoxes = cardBoxes.concat(
+                  filteredCards.map((card, index) => (
+                    <CardBox
+                      key={`nonfoil-${index}`}
+                      card={card}
+                      isFoil={false}
+                      collection={collection}
+                      refetchCollection={refetchCollection}
+                    />
+                  ))
+                );
+              }
+              if (filterValues.foil !== "non-foil" && filteredCards) {
+                cardBoxes = cardBoxes.concat(
+                  filteredCards.map((card, index) => (
+                    <CardBox
+                      key={`foil-${index}`}
+                      card={card}
+                      isFoil={true}
+                      collection={collection}
+                      refetchCollection={refetchCollection}
+                    />
+                  ))
+                );
+              }
+
+              // Insert a Separator every 9 CardBoxes (i.e., every 3 rows)
+              const rows: React.ReactNode[] = [];
+              for (let i = 0; i < cardBoxes.length; i += 9) {
+                const group = cardBoxes.slice(i, i + 9);
+                rows.push(
+                  <div
+                    className="grid grid-cols-3 justify-items-center gap-4 w-full justify-self-center"
+                    key={`cardbox-row-${i / 9}`}
+                  >
+                    {group}
+                  </div>
+                );
+                // Only add a separator if this is not the last group
+                if (i + 9 < cardBoxes.length) {
+                  rows.push(
+                    <div
+                      className="w-full flex justify-center my-2"
+                      key={`separator-${i / 9}`}
+                    >
+                      <Separator className="my-4 w-3/4" />
+                    </div>
+                  );
+                }
+              }
+              return rows;
+            })()}
           </div>
         </div>
       </div>
