@@ -154,6 +154,11 @@ const CardBox = ({
             }}
           />
 
+          {/* Quantity indicator square */}
+          <div className="absolute top-2 right-2 bg-gray-800/80 text-white text-sm font-bold px-2 py-1 rounded min-w-[24px] text-center z-10">
+            {isFoil ? foilQty : regQty}
+          </div>
+
           {isFoil && (
             <>
               {/* ✨ Shine Bar - CONFINED */}
